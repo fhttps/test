@@ -238,7 +238,6 @@ main {
     background-color: #f3a847;
 }
 
-/* Basket Styles */
 .basket-popup {
     position: fixed;
     top: 1rem;
@@ -250,7 +249,20 @@ main {
     border-radius: 8px;
     display: none;
     z-index: 1000;
+    max-height: 80vh; /* Added max-height */
+    overflow-y: auto; /* Added scroll if content exceeds height */
 }
+
+.basket-popup .basket-item-img {
+    width: 60px;
+    height: 60px;
+    margin-right: 1rem;
+}
+
+.basket-popup .basket-item-info {
+    flex-grow: 1;
+}
+
 
 .basket-popup h2 {
     margin-bottom: 1rem;
@@ -616,13 +628,13 @@ footer .footer-section .return-info a:hover {
         const basketItems = document.getElementById('basketItems');
         let basket = [];
     
-        function toggleBasket() {
-            if (basketPopup.style.display === 'none' || basketPopup.style.display === '') {
-                basketPopup.style.display = 'block';
-            } else {
-                basketPopup.style.display = 'none';
-            }
-        }
+       function toggleBasket() {
+    if (basketPopup.style.display === 'none' || basketPopup.style.display === '') {
+        basketPopup.style.display = 'block';
+    } else {
+        basketPopup.style.display = 'none';
+    }
+}
     
         function openCheckout() {
             checkoutPopup.style.display = 'block';
@@ -654,8 +666,8 @@ function updateBasketUI() {
     basket.forEach(item => {
         const li = document.createElement('li');
         li.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" class="basket-item-img">
-            <div class="basket-item-info">
+            <img src="${item.image}" alt="${item.name}" class="item-image">
+            <div class="item-details">
                 <span>${item.name}</span>
                 <div class="basket-item-quantity">
                     <button onclick="changeQuantity('${item.name}', -1)">-</button>
