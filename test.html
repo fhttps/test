@@ -243,7 +243,7 @@ main {
     position: fixed;
     top: 1rem;
     right: 1rem;
-    width: 320px;
+    width: 400px; /* Increased width to accommodate images */
     background: #fff;
     padding: 1.5rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -267,7 +267,6 @@ main {
 
 .basket-popup li {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
     border-bottom: 1px solid #ddd;
@@ -278,9 +277,20 @@ main {
     border-bottom: none;
 }
 
-.basket-popup li span {
+.basket-popup .item-image {
+    flex-shrink: 0;
+    width: 60px; /* Width of the image */
+    height: 60px; /* Height of the image */
+    margin-right: 1rem; /* Space between image and text */
+}
+
+.basket-popup .item-details {
     flex-grow: 1;
-    margin-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.basket-popup .item-details span {
     font-size: 0.9rem;
 }
 
@@ -338,6 +348,7 @@ main {
 .basket-popup .checkout-btn:hover {
     background-color: #0056b3;
 }
+
 
 /* Checkout Styles */
 .checkout-popup {
@@ -482,9 +493,13 @@ footer .footer-section .return-info a:hover {
             <input type="text" id="searchInput" placeholder="Search for flowers...">
             <button onclick="searchProduct()"></button>
         </div>
-        <div class="basket">
-            <button onclick="toggleBasket()">🧺 Basket</button>
-        </div>
+      <div class="basket-popup" id="basketPopup">
+    <button class="close-popup" onclick="toggleBasket()">✖</button> 
+    <h2>🧺 Basket</h2>
+    <ul id="basketItems"></ul>
+    <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
+</div>
+
     </nav>
 </header>
 
@@ -625,37 +640,43 @@ footer .footer-section .return-info a:hover {
             checkoutPopup.style.display = 'none';
         }
     
-        function addToBasket(productName, productPrice) {
-            const quantityInput = event.target.previousElementSibling;
-            const quantity = parseInt(quantityInput.value);
-            const existingItem = basket.find(item => item.name === productName);
-    
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                basket.push({ name: productName, price: productPrice, quantity: quantity });
-            }
-    
-            updateBasketUI();
-        }
-    
-        function updateBasketUI() {
-            basketItems.innerHTML = '';
-            basket.forEach(item => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>${item.name}</span>
-                    <div class="basket-item-quantity">
-                        <button onclick="changeQuantity('${item.name}', -1)">-</button>
-                        <input type="number" value="${item.quantity}" readonly>
-                        <button onclick="changeQuantity('${item.name}', 1)">+</button>
-                    </div>
-                    <span class="item-total">£${(item.price * item.quantity).toFixed(2)}</span>
-                    <button onclick="removeFromBasket('${item.name}')">Remove</button>
-                `;
-                basketItems.appendChild(li);
-            });
-        }
+      function addToBasket(productName, productPrice) {
+    const quantityInput = event.target.previousElementSibling;
+    const quantity = parseInt(quantityInput.value);
+    const productImage = event.target.previousElementSibling.previousElementSibling.src; // Get the image src
+
+    const existingItem = basket.find(item => item.name === productName);
+
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        basket.push({ name: productName, price: productPrice, quantity: quantity, image: productImage });
+    }
+
+    updateBasketUI();
+}
+
+function updateBasketUI() {
+    basketItems.innerHTML = '';
+    basket.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="basket-item-img">
+            <div class="basket-item-info">
+                <span>${item.name}</span>
+                <div class="basket-item-quantity">
+                    <button onclick="changeQuantity('${item.name}', -1)">-</button>
+                    <input type="number" value="${item.quantity}" readonly>
+                    <button onclick="changeQuantity('${item.name}', 1)">+</button>
+                </div>
+            </div>
+            <span class="item-total">£${(item.price * item.quantity).toFixed(2)}</span>
+            <button onclick="removeFromBasket('${item.name}')">Remove</button>
+        `;
+        basketItems.appendChild(li);
+    });
+}
+
     
         function changeQuantity(productName, change) {
             const item = basket.find(item => item.name === productName);
