@@ -86,19 +86,21 @@ nav .search-bar {
     /* Optional: add hover effects or adjust image on hover */
 }
 
-
 .basket button {
-    background-color: #febd69;
-    color: #111;
+    background: url('basket.png') no-repeat center center;
+    background-size: cover; /* Ensures the image covers the entire button */
+    color: transparent; /* Hide any text */
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+    padding: 0; /* Remove padding so the image fits perfectly */
+    width: 40px; /* Set the button width to match the image size */
+    height: 40px; /* Set the button height to match the image size */
+    border-radius: 4px; /* Keep the border-radius if you want rounded corners */
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .basket button:hover {
-    background-color: #f3a847;
+    background-color: transparent; /* Ensure no color overlays the image on hover */
 }
 
 /* Secondary Navbar Styles */
