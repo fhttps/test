@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Professional Flower Shop</title>
+    <style>
+         /* General Styles */
+         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #e2b9b9;
+        }
+
+        header {
+            background-color: #232f3e;
+            color: #fff;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #37475a;
+            border-radius: 4px;
+        }
+
+        nav .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-grow: 1;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .search-bar button {
+            padding: 0.5rem 1rem;
+            border: none;
+            background-color: #febd69;
+            color: #111;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #f3a847;
+        }
+
+        .basket button {
+            background-color: #febd69;
+            color: #111;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .basket button:hover {
+            background-color: #f3a847;
+        }
+        /* Secondary Navbar Styles */
+/* Secondary Navbar Styles */
+.secondary-nav {
+    background-color: #f4f4f4; /* Lighter grey color */
+    padding: 0.5rem 1rem;
+    box-shadow: 0 22px 34px rgba(234, 224, 224, 0.878);
+}
+
+.secondary-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.secondary-nav ul li {
+    margin: 0 1rem;
+}
+
+.secondary-nav ul li a {
+    color: #232f3e; /* Darker color for text */
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem;
+    transition: color 0.3s;
+}
+
+.secondary-nav ul li a:hover {
+    color: #0c0c0a; /* Accent color on hover */
+    background-color: #e3dfdf; /* Lighter grey color */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .secondary-nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .secondary-nav ul li {
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .secondary-nav {
+        padding: 0.5rem;
+    }
+
+    .secondary-nav ul li {
+        margin: 0.25rem 0;
+    }
+
+    .secondary-nav ul li a {
+        font-size: 0.875rem;
+        padding: 0.25rem;
+    }
+}
+
+        /* Main Styles */
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .product {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 0.5rem;
+        }
+
+        .product h2 {
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            color: #333;
+        }
+
+        .product p {
+            margin-bottom: 0.5rem;
+            color: #777;
+        }
+
+        .product .quantity {
+            width: 50px;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.25rem;
+        }
+
+        .product button {
+            background-color: #febd69;
+            color: #111;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .product button:hover {
+            background-color: #f3a847;
+        }
+
+        /* Basket Styles */
+        .basket-popup {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            width: 320px;
+            background: #fff;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .basket-popup h2 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+            color: #232f3e;
+        }
+
+        .basket-popup ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .basket-popup li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.5rem;
+        }
+
+        .basket-popup li:last-child {
+            border-bottom: none;
+        }
+
+        .basket-popup li span {
+            flex-grow: 1;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .basket-popup .item-total {
+            margin-right: 0.5rem;
+            color: #333;
+        }
+
+        .basket-popup .basket-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+
+        .basket-popup .basket-item-quantity button {
+            border: none;
+            background-color: #ddd;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .basket-popup .basket-item-quantity button:hover {
+            background-color: #ccc;
+        }
+
+        .basket-popup .basket-item-quantity input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 0.5rem;
+        }
+
+        .basket-popup button {
+            background-color: #febd69;
+            color: #111;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .basket-popup button:hover {
+            background-color: #f3a847;
+        }
+
+        .basket-popup .checkout-btn {
+            background-color: #007bff;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+
+        .basket-popup .checkout-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Checkout Styles */
+        .checkout-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 550px;
+            background: #fff;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .checkout-popup h2 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+            color: #232f3e;
+        }
+
+        .checkout-popup label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .checkout-popup input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .checkout-popup select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .checkout-popup button {
+            background-color: #febd69;
+            color: #111;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+    
+
+        .checkout-popup .close-checkout {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .checkout-popup .close-checkout:hover {
+            color: #333;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            header, main, .basket-popup, .checkout-popup {
+                padding: 1rem;
+            }
+
+            .product {
+                padding: 0.5rem;
+            }
+
+            .product h2 {
+                font-size: 1rem;
+            }
+
+            .product p {
+                font-size: 0.875rem;
+            }
+
+            .basket-popup, .checkout-popup {
+                width: 90%;
+            }
+        }
+      /* Footer Styles */
+footer {
+    background-color: #232f3e;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.social-media {
+    margin-bottom: 1rem;
+}
+
+.social-icon {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+    transition: color 0.3s;
+}
+
+.social-icon:hover {
+    color: #febd69;
+}
+
+.back-to-main {
+    color: #080303;
+    text-decoration: none;
+    background-color: #febd69;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.back-to-main:hover {
+    background-color: #f3a847;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .social-icon {
+        font-size: 1.2rem;
+        margin: 0 0.3rem;
+    }
+
+    .back-to-main {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 1rem 0.5rem;
+    }
+
+    .social-icon {
+        font-size: 1rem;
+        margin: 0 0.2rem;
+    }
+
+    .back-to-main {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+    }
+}
+/* Close Button Styles */
+.close-popup, .close-checkout {
+    position: absolute;
+    top: .05rem;
+    right: .05rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ccc;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href=""><img src="m.png" alt="Logo"></a>
+            </div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for flowers...">
+                <button onclick="searchProduct()">Search</button>
+            </div>
+            <div class="basket">
+                <button onclick="toggleBasket()">🧺 Basket</button>
+            </div>
+        </nav>
+    </header>
+    <nav class="secondary-nav">
+        <ul>
+            <li><a href="#">Daily Promos</a></li>
+            <li><a href="#">Customer Favorites</a></li>
+            <li><a href="#">🆕New Arrivals</a></li>
+            <li><a href="#">🛒Best Sellers</a></li>
+            <li><a href="#">Seasonal Specials</a></li>
+        </ul>
+    </nav>
+    
+    
+    <main>
+        <div class="products" id="productList">
+            <div class="product" data-name="Rose Bouquet">
+                <img src="1.png" alt="Rose Bouquet">
+                <h2>Rose Bouquet</h2>
+                <p>Price: £29.99</p>
+                <input type="number" class="quantity" value="1" min="1">
+                <button onclick="addToBasket('Rose Bouquet', 29.99)">Add to Basket</button>
+            </div>
+            <div class="product" data-name="Tulip Arrangement">
+                <img src="2.png" alt="Tulip Arrangement">
+                <h2>Tulip Arrangement</h2>
+                <p>Price: £24.99</p>
+                <input type="number" class="quantity" value="1" min="1">
+                <button onclick="addToBasket('Tulip Arrangement', 24.99)">Add to Basket</button>
+            </div>
+            <div class="product" data-name="Orchid Pot">
+                <img src="3.png" alt="Orchid Pot">
+                <h2>Orchid Pot</h2>
+                <p>Price: £19.99</p>
+                <input type="number" class="quantity" value="1" min="1">
+                <button onclick="addToBasket('Orchid Pot', 19.99)">Add to Basket</button>
+            </div>
+            <div class="product" data-name="Orchid">
+                <img src="4.png" alt="Orchid">
+                <h2>Orchid</h2>
+                <p>Price: £14.99</p>
+                <input type="number" class="quantity" value="1" min="1">
+                <button onclick="addToBasket('Orchid', 14.99)">Add to Basket</button>
+            </div>
+        </div>
+    </main>
+    <div class="basket-popup" id="basketPopup">
+        <button class="close-popup" onclick="toggleBasket()">✖</button> 
+        <h2> 🧺 Basket</h2>
+        <ul id="basketItems"></ul>
+        <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
+    </div>
+    <div class="checkout-popup" id="checkoutPopup">
+        <button class="close-checkout" onclick="closeCheckout()">✖</button>
+        <h2>Checkout</h2>
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Enter your name">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email">
+        <label for="address">Address</label>
+        <input type="text" id="address" placeholder="Enter your address">
+        <label for="card-number">Credit Card Number</label>
+        <input type="text" id="card-number" placeholder="Enter your credit card number">
+        <label for="card-expiry">Expiry Date</label>
+        <input type="text" id="card-expiry" placeholder="MM/YY">
+        <label for="payment">Payment Method</label>
+        <select id="payment">
+            <option value="visa">Visa</option>
+            <option value="mastercard">MasterCard</option>
+            <option value="amex">American Express</option>
+        </select>
+        <button onclick="completePurchase()">Complete Purchase</button>
+    </div>
+    <br>  <br>  <br>  <br>
+    <footer>
+        <div class="footer-content">
+            <div class="social-media">
+                <a href="https://facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <a href="index.html" class="back-to-main">Back to Main Page</a>
+            <br>
+            <p>@ 2024. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    
+    <script>
+        const basketPopup = document.getElementById('basketPopup');
+        const checkoutPopup = document.getElementById('checkoutPopup');
+        const basketItems = document.getElementById('basketItems');
+        let basket = [];
+    
+        function toggleBasket() {
+            if (basketPopup.style.display === 'none' || basketPopup.style.display === '') {
+                basketPopup.style.display = 'block';
+            } else {
+                basketPopup.style.display = 'none';
+            }
+        }
+    
+        function openCheckout() {
+            checkoutPopup.style.display = 'block';
+            basketPopup.style.display = 'none';
+        }
+    
+        function closeCheckout() {
+            checkoutPopup.style.display = 'none';
+        }
+    
+        function addToBasket(productName, productPrice) {
+            const quantityInput = event.target.previousElementSibling;
+            const quantity = parseInt(quantityInput.value);
+            const existingItem = basket.find(item => item.name === productName);
+    
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                basket.push({ name: productName, price: productPrice, quantity: quantity });
+            }
+    
+            updateBasketUI();
+        }
+    
+        function updateBasketUI() {
+            basketItems.innerHTML = '';
+            basket.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${item.name}</span>
+                    <div class="basket-item-quantity">
+                        <button onclick="changeQuantity('${item.name}', -1)">-</button>
+                        <input type="number" value="${item.quantity}" readonly>
+                        <button onclick="changeQuantity('${item.name}', 1)">+</button>
+                    </div>
+                    <span class="item-total">£${(item.price * item.quantity).toFixed(2)}</span>
+                    <button onclick="removeFromBasket('${item.name}')">Remove</button>
+                `;
+                basketItems.appendChild(li);
+            });
+        }
+    
+        function changeQuantity(productName, change) {
+            const item = basket.find(item => item.name === productName);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromBasket(productName);
+                } else {
+                    updateBasketUI();
+                }
+            }
+        }
+    
+        function removeFromBasket(productName) {
+            basket = basket.filter(item => item.name !== productName);
+            updateBasketUI();
+        }
+    
+        function completePurchase() {
+            const email = document.getElementById('email').value;
+            const totalAmount = basket.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    
+            alert(`Thank you for your purchase! You will receive an invoice at the following email: ${email}. Total amount paid: £${totalAmount}.`);
+    
+            // Clear basket and form inputs
+            basket = [];
+            updateBasketUI();
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('card-number').value = '';
+            document.getElementById('card-expiry').value = '';
+            document.getElementById('payment').value = 'visa';
+    
+            // Close checkout popup and redirect to main page
+            closeCheckout();
+            window.location.href = 'sales.html'; // Redirect to main page
+        }
+    
+        function searchProduct() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                const productName = product.getAttribute('data-name').toLowerCase();
+                if (productName.includes(query)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+    
+        // Close button functionality
+        document.querySelector('.basket-popup .close-basket').addEventListener('click', () => {
+            basketPopup.style.display = 'none';
+        });
+    
+        document.querySelector('.checkout-popup .close-checkout').addEventListener('click', () => {
+            checkoutPopup.style.display = 'none';
+        });
+    
+    </script>
+    
+</body>
+</html>
