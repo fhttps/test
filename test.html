@@ -6,20 +6,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Professional Flower Shop</title>
     <style>
- /* General Styles */
-        body {
+ body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background-color: #f7f7f7; /* Very light gray */
+            background-color: #f7f7f7;
         }
 
         /* Header Styles */
         header {
-            background-color: #131A22; /* Dark color matching Amazon UK's top navbar */
+            background-color: #131A22;
             color: #fff;
-            padding: 0.5rem 1rem; /* Reduced padding */
+            padding: 0.5rem 1rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -31,8 +30,7 @@
         }
 
         .logo img {
-            height: 40px; /* Adjusted height */
-            margin-right: 1rem;
+            height: 40px;
         }
 
         nav ul {
@@ -47,8 +45,8 @@
             color: #fff;
             text-decoration: none;
             font-weight: bold;
-            padding: 0.5rem 0.75rem; /* Adjusted padding */
-            transition: background-color 0.3s, color 0.3s;
+            padding: 0.5rem 0.75rem;
+            transition: background-color 0.3s;
         }
 
         nav ul li a:hover {
@@ -67,7 +65,7 @@
             padding: 0.5rem;
             border: 1px solid #ccc;
             border-radius: 4px;
-            width: calc(100% - 3rem); /* Adjust to account for button width */
+            width: calc(100% - 3rem);
         }
 
         .search-bar button {
@@ -75,40 +73,33 @@
             border: none;
             background: url('search.png') no-repeat center center;
             background-size: cover;
-            width: 3rem; /* Adjust to fit your image */
-            height: 2.1rem; /* Adjust to fit your image */
+            width: 3rem;
+            height: 2.1rem;
             cursor: pointer;
-            transition: background-color 0.3s;
-            border-radius: 4px;
         }
 
-        .search-bar button:hover {
-            /* Optional: add hover effects or adjust image on hover */
+        .basket {
+            display: flex;
+            align-items: center;
         }
 
         .basket button {
             background: url('basket.png') no-repeat center center;
-            background-size: cover; /* Ensures the image covers the entire button */
-            color: transparent; /* Hide any text */
+            background-size: cover;
+            color: transparent;
             border: none;
-            padding: 0; /* Remove padding so the image fits perfectly */
-            width: 100px; /* Set the button width to match the image size */
-            height: 40px; /* Set the button height to match the image size */
-            border-radius: 4px; /* Keep the border-radius if you want rounded corners */
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .basket button:hover {
-            background-color: transparent; /* Ensure no color overlays the image on hover */
         }
 
         /* Secondary Navbar Styles */
         .secondary-nav {
-            background-color: #3a4b62; /* Lighter version of #232f3e */
-            padding: 0.5rem 1rem; /* Reduced padding */
+            background-color: #3a4b62;
+            padding: 0.5rem 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-family: Arial, Helvetica, sans-serif; /* Simple, clean font */
         }
 
         .secondary-nav ul {
@@ -120,48 +111,20 @@
         }
 
         .secondary-nav ul li {
-            margin: 0 0.5rem; /* Adjusted margin */
+            margin: 0 0.5rem;
         }
 
         .secondary-nav ul li a {
-            color: #fff; /* Keep text color white for contrast */
+            color: #fff;
             text-decoration: none;
             padding: 0.5rem;
             transition: color 0.3s;
-            font-weight: normal; /* Remove bold */
-            font-size: 1rem; /* Simple font size */
         }
 
         .secondary-nav ul li a:hover {
-            color: #dcdcdc; /* Accent color on hover, lighter grey */
-            background-color: #2c3b50; /* Slightly darker shade for hover */
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .secondary-nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .secondary-nav ul li {
-                margin: 0.25rem 0; /* Adjusted margin */
-            }
-        }
-
-        @media (max-width: 480px) {
-            .secondary-nav {
-                padding: 0.5rem;
-            }
-
-            .secondary-nav ul li {
-                margin: 0.25rem 0; /* Adjusted margin */
-            }
-
-            .secondary-nav ul li a {
-                font-size: 0.875rem;
-                padding: 0.25rem;
-            }
+            color: #dcdcdc;
+            background-color: #2c3b50;
+            border-radius: 4px;
         }
 
         /* Main Content Area */
@@ -231,19 +194,20 @@
             background-color: #f3a847;
         }
 
+        /* Basket Popup Styles */
         .basket-popup {
             position: fixed;
             top: 1rem;
             right: 1rem;
-            width: 400px; /* Increased width to accommodate images */
+            width: 400px;
             background: #fff;
             padding: 1.5rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             display: none;
             z-index: 1000;
-            max-height: 80vh; /* Added max-height */
-            overflow-y: auto; /* Added scroll if content exceeds height */
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .basket-popup .close-popup {
@@ -255,16 +219,6 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-        }
-
-        .basket-popup .basket-item-img {
-            width: 60px;
-            height: 60px;
-            margin-right: 1rem;
-        }
-
-        .basket-popup .basket-item-info {
-            flex-grow: 1;
         }
 
         .basket-popup h2 {
@@ -294,8 +248,8 @@
 
         .basket-popup .item-image {
             flex-shrink: 0;
-            width: 60px; /* Width of the image */
-            height: 60px; /* Height of the image */
+            width: 60px;
+            height: 60px;
             background-color: #f5f5f5;
             display: flex;
             justify-content: center;
@@ -334,7 +288,7 @@
             font-size: 1.125rem;
         }
 
-        .basket-popup .checkout-button {
+        .basket-popup .checkout-btn {
             display: block;
             width: 100%;
             background-color: #febd69;
@@ -349,28 +303,132 @@
             transition: background-color 0.3s;
         }
 
-        .basket-popup .checkout-button:hover {
+        .basket-popup .checkout-btn:hover {
             background-color: #f3a847;
+        }
+
+        /* Checkout Popup Styles */
+        .checkout-popup {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            width: 400px;
+            background: #fff;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .checkout-popup .close-checkout {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .checkout-popup h2 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: #232f3e;
+        }
+
+        .checkout-popup label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .checkout-popup input,
+        .checkout-popup select {
+            width: calc(100% - 2rem);
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .checkout-popup button {
+            background-color: #febd69;
+            color: #111;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.125rem;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-popup button:hover {
+            background-color: #f3a847;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #131A22;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-media {
+            margin-bottom: 1rem;
+        }
+
+        .social-media a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-media a:hover {
+            color: #febd69;
+        }
+
+        .back-to-main {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #febd69;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .back-to-main:hover {
+            color: #f3a847;
         }
     </style>
 </head>
 <body>
-<header>
-    <nav>
-        <div class="logo">
-            <a href="#"><img src="m.png" alt="Logo"></a>
-        </div>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Products</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search for flowers...">
-            <button onclick="searchProduct()"></button>
-        </div>
-    </nav>
-</header>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="#"><img src="m.png" alt="Logo"></a>
+            </div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for flowers...">
+                <button onclick="searchProduct()"></button>
+            </div>
+        </nav>
+    </header>
 
     <nav class="secondary-nav">
         <ul>
@@ -381,8 +439,7 @@
             <li><a href="#">Seasonal Specials</a></li>
         </ul>
     </nav>
-    
-    
+
     <main>
         <div class="products" id="productList">
             <div class="product" data-name="Rose Bouquet">
@@ -413,42 +470,44 @@
                 <input type="number" class="quantity" value="1" min="1">
                 <button onclick="addToBasket('Orchid', 14.99)">Add to Basket</button>
             </div>
-               <div class="product" data-name="Rose yellow">
-                <img src="f.png" alt="Orchid">
-                <h2>Rose yellow</h2>
+            <div class="product" data-name="Rose Yellow">
+                <img src="f.png" alt="Rose Yellow">
+                <h2>Rose Yellow</h2>
                 <p>Price: £14.99</p>
                 <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Rose yellow', 14.99)">Add to Basket</button>
+                <button onclick="addToBasket('Rose Yellow', 14.99)">Add to Basket</button>
             </div>
-                  <div class="product" data-name="Rose Blue">
-                <img src="f.png" alt="Orchid">
+            <div class="product" data-name="Rose Blue">
+                <img src="f.png" alt="Rose Blue">
                 <h2>Rose Blue</h2>
                 <p>Price: £14.99</p>
                 <input type="number" class="quantity" value="1" min="1">
                 <button onclick="addToBasket('Rose Blue', 14.99)">Add to Basket</button>
             </div>
-                  <div class="product" data-name="Orchid orange">
-                <img src="f.png" alt="Orchid">
+            <div class="product" data-name="Orchid Orange">
+                <img src="f.png" alt="Orchid Orange">
                 <h2>Orchid Orange</h2>
                 <p>Price: £14.99</p>
                 <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Orchid orange', 14.99)">Add to Basket</button>
+                <button onclick="addToBasket('Orchid Orange', 14.99)">Add to Basket</button>
             </div>
-                  <div class="product" data-name="grey tulip">
-                <img src="f.png" alt="Orchid">
-                <h2>grey tulip</h2>
+            <div class="product" data-name="Grey Tulip">
+                <img src="f.png" alt="Grey Tulip">
+                <h2>Grey Tulip</h2>
                 <p>Price: £14.99</p>
                 <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('grey tulip', 14.99)">Add to Basket</button>
+                <button onclick="addToBasket('Grey Tulip', 14.99)">Add to Basket</button>
             </div>
         </div>
     </main>
-       <div class="basket-popup" id="basketPopup">
-    <button class="close-popup" onclick="toggleBasket()">✖</button> 
-    <h2>🧺 Basket</h2>
-    <ul id="basketItems"></ul>
-    <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
-</div>
+
+    <div class="basket-popup" id="basketPopup">
+        <button class="close-popup" onclick="toggleBasket()">✖</button>
+        <h2>🧺 Basket</h2>
+        <ul id="basketItems"></ul>
+        <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
+    </div>
+
     <div class="checkout-popup" id="checkoutPopup">
         <button class="close-checkout" onclick="closeCheckout()">✖</button>
         <h2>Checkout</h2>
@@ -470,7 +529,7 @@
         </select>
         <button onclick="completePurchase()">Complete Purchase</button>
     </div>
-    <br>  <br>  <br>  <br>
+
     <footer>
         <div class="footer-content">
             <div class="social-media">
@@ -481,11 +540,9 @@
             </div>
             <a href="index.html" class="back-to-main">Back to Main Page</a>
             <br>
-            <p>@ 2024. All rights reserved.</p>
+            <p>&copy; 2024. All rights reserved.</p>
         </div>
     </footer>
-    
-    
     <script>
         const basketPopup = document.getElementById('basketPopup');
         const checkoutPopup = document.getElementById('checkoutPopup');
