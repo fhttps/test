@@ -194,20 +194,21 @@
             background-color: #f3a847;
         }
 
-        /* Basket Popup Styles */
-        .basket-popup {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            width: 400px;
-            background: #fff;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
+         .basket-popup {
             display: none;
+            position: fixed;
+            top: 20%;
+            right: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            max-height: 80vh;
-            overflow-y: auto;
+        }
+
+        .basket-popup.active {
+            display: block;
         }
 
         .basket-popup .close-popup {
@@ -544,127 +545,121 @@
         </div>
     </footer>
     <script>
-        const basketPopup = document.getElementById('basketPopup');
-        const checkoutPopup = document.getElementById('checkoutPopup');
-        const basketItems = document.getElementById('basketItems');
-        let basket = [];
-    
-       function toggleBasket() {
-    if (basketPopup.style.display === 'none' || basketPopup.style.display === '') {
-        basketPopup.style.display = 'block';
-    } else {
-        basketPopup.style.display = 'none';
-    }
-}
-    
-        function openCheckout() {
-            checkoutPopup.style.display = 'block';
-            basketPopup.style.display = 'none';
-        }
-    
-        function closeCheckout() {
-            checkoutPopup.style.display = 'none';
-        }
-    
-      function addToBasket(productName, productPrice) {
-    const quantityInput = event.target.previousElementSibling;
-    const quantity = parseInt(quantityInput.value);
-    const productImage = event.target.previousElementSibling.previousElementSibling.src; // Get the image src
+    const basketPopup = document.getElementById('basketPopup');
+    const checkoutPopup = document.getElementById('checkoutPopup');
+    const basketItems = document.getElementById('basketItems');
+    let basket = [];
 
-    const existingItem = basket.find(item => item.name === productName);
-
-    if (existingItem) {
-        existingItem.quantity += quantity;
-    } else {
-        basket.push({ name: productName, price: productPrice, quantity: quantity, image: productImage });
+    function toggleBasket() {
+        basketPopup.classList.toggle('active');
     }
 
-    updateBasketUI();
-}
+    function addToBasket(productName, productPrice) {
+        const quantityInput = event.target.previousElementSibling;
+        const quantity = parseInt(quantityInput.value);
+        const productImage = event.target.previousElementSibling.previousElementSibling.src; // Get the image src
 
-function updateBasketUI() {
-    basketItems.innerHTML = '';
-    basket.forEach(item => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" class="item-image">
-            <div class="item-details">
-                <span>${item.name}</span>
-                <div class="basket-item-quantity">
-                    <button onclick="changeQuantity('${item.name}', -1)">-</button>
-                    <input type="number" value="${item.quantity}" readonly>
-                    <button onclick="changeQuantity('${item.name}', 1)">+</button>
+        const existingItem = basket.find(item => item.name === productName);
+
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            basket.push({ name: productName, price: productPrice, quantity: quantity, image: productImage });
+        }
+
+        updateBasketUI();
+        toggleBasket(); // Show the basket popup
+    }
+
+    function updateBasketUI() {
+        basketItems.innerHTML = '';
+        basket.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+                <div class="item-details">
+                    <span>${item.name}</span>
+                    <div class="basket-item-quantity">
+                        <button onclick="changeQuantity('${item.name}', -1)">-</button>
+                        <input type="number" value="${item.quantity}" readonly>
+                        <button onclick="changeQuantity('${item.name}', 1)">+</button>
+                    </div>
                 </div>
-            </div>
-            <span class="item-total">£${(item.price * item.quantity).toFixed(2)}</span>
-            <button onclick="removeFromBasket('${item.name}')">Remove</button>
-        `;
-        basketItems.appendChild(li);
-    });
-}
+                <span class="item-total">£${(item.price * item.quantity).toFixed(2)}</span>
+                <button onclick="removeFromBasket('${item.name}')">Remove</button>
+            `;
+            basketItems.appendChild(li);
+        });
+    }
 
-    
-        function changeQuantity(productName, change) {
-            const item = basket.find(item => item.name === productName);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeFromBasket(productName);
-                } else {
-                    updateBasketUI();
-                }
+    function changeQuantity(productName, change) {
+        const item = basket.find(item => item.name === productName);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                removeFromBasket(productName);
+            } else {
+                updateBasketUI();
             }
         }
-    
-        function removeFromBasket(productName) {
-            basket = basket.filter(item => item.name !== productName);
-            updateBasketUI();
-        }
-    
-        function completePurchase() {
-            const email = document.getElementById('email').value;
-            const totalAmount = basket.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-    
-            alert(`Thank you for your purchase! You will receive an invoice at the following email: ${email}. Total amount paid: £${totalAmount}.`);
-    
-            // Clear basket and form inputs
-            basket = [];
-            updateBasketUI();
-            document.getElementById('name').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('address').value = '';
-            document.getElementById('card-number').value = '';
-            document.getElementById('card-expiry').value = '';
-            document.getElementById('payment').value = 'visa';
-    
-            // Close checkout popup and redirect to main page
-            closeCheckout();
-            window.location.href = 'sales.html'; // Redirect to main page
-        }
-    
-        function searchProduct() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const products = document.querySelectorAll('.product');
-            products.forEach(product => {
-                const productName = product.getAttribute('data-name').toLowerCase();
-                if (productName.includes(query)) {
-                    product.style.display = 'block';
-                } else {
-                    product.style.display = 'none';
-                }
-            });
-        }
-    
-        // Close button functionality
-        document.querySelector('.basket-popup .close-basket').addEventListener('click', () => {
-            basketPopup.style.display = 'none';
+    }
+
+    function removeFromBasket(productName) {
+        basket = basket.filter(item => item.name !== productName);
+        updateBasketUI();
+    }
+
+    function openCheckout() {
+        checkoutPopup.style.display = 'block';
+    }
+
+    function closeCheckout() {
+        checkoutPopup.style.display = 'none';
+    }
+
+    function completePurchase() {
+        const email = document.getElementById('email').value;
+        const totalAmount = basket.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+
+        alert(`Thank you for your purchase! You will receive an invoice at the following email: ${email}. Total amount paid: £${totalAmount}.`);
+
+        // Clear basket and form inputs
+        basket = [];
+        updateBasketUI();
+        document.getElementById('name').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('card-number').value = '';
+        document.getElementById('card-expiry').value = '';
+        document.getElementById('payment').value = 'visa';
+
+        // Close checkout popup and redirect to main page
+        closeCheckout();
+        window.location.href = 'sales.html'; // Redirect to main page
+    }
+
+    function searchProduct() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const products = document.querySelectorAll('.product');
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name').toLowerCase();
+            if (productName.includes(query)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
         });
-    
-        document.querySelector('.checkout-popup .close-checkout').addEventListener('click', () => {
-            checkoutPopup.style.display = 'none';
-        });
-    
-    </script>
-    
+    }
+
+    // Event listeners for closing popups
+    document.querySelector('.basket-popup .close-popup').addEventListener('click', () => {
+        basketPopup.classList.remove('active');
+    });
+
+    document.querySelector('.checkout-popup .close-checkout').addEventListener('click', () => {
+        checkoutPopup.style.display = 'none';
+    });
+</script>
+
 </body>
 </html>
