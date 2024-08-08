@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Professional Flower Shop</title>
     <style>
-        /* General Styles */
+   /* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -18,7 +18,7 @@ body {
 header {
     background-color: #232f3e;
     color: #fff;
-    padding: 1rem;
+    padding: 0.5rem 1rem; /* Reduced padding */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -27,11 +27,10 @@ nav {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 1rem;
 }
 
 .logo img {
-    height: 50px;
+    height: 40px; /* Adjusted height */
     margin-right: 1rem;
 }
 
@@ -47,7 +46,7 @@ nav ul li a {
     color: #fff;
     text-decoration: none;
     font-weight: bold;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.75rem; /* Adjusted padding */
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -101,9 +100,9 @@ nav .search-bar {
 
 /* Secondary Navbar Styles */
 .secondary-nav {
-    background-color: #f4f4f4;
-    padding: 0.5rem 1rem;
-    box-shadow: 0 22px 34px rgba(234, 224, 224, 0.878);
+    background-color: #e3e3e3; /* Lighter grey color */
+    padding: 0.5rem 1rem; /* Reduced padding */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .secondary-nav ul {
@@ -115,11 +114,11 @@ nav .search-bar {
 }
 
 .secondary-nav ul li {
-    margin: 0 1rem;
+    margin: 0 0.5rem; /* Adjusted margin */
 }
 
 .secondary-nav ul li a {
-    color: #232f3e;
+    color: #232f3e; /* Darker color for text */
     text-decoration: none;
     font-weight: bold;
     padding: 0.5rem;
@@ -127,65 +126,34 @@ nav .search-bar {
 }
 
 .secondary-nav ul li a:hover {
-    color: #0c0c0a;
-    background-color: #e3dfdf;
+    color: #0c0c0a; /* Accent color on hover */
+    background-color: #dcdcdc; /* Lighter grey color */
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .search-bar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .products {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-
     .secondary-nav ul {
         flex-direction: column;
         align-items: center;
     }
 
     .secondary-nav ul li {
-        margin: 0.5rem 0;
+        margin: 0.25rem 0; /* Adjusted margin */
     }
 }
 
 @media (max-width: 480px) {
-    header, main, .basket-popup, .checkout-popup {
-        padding: 1rem;
-    }
-
-    .product {
+    .secondary-nav {
         padding: 0.5rem;
     }
 
-    .product h2 {
-        font-size: 1rem;
+    .secondary-nav ul li {
+        margin: 0.25rem 0; /* Adjusted margin */
     }
 
-    .product p {
+    .secondary-nav ul li a {
         font-size: 0.875rem;
-    }
-
-    .basket-popup, .checkout-popup {
-        width: 90%;
-    }
-
-    .search-bar input {
-        font-size: 0.875rem;
-    }
-
-    .search-bar button {
-        font-size: 0.875rem;
-        padding: 0.5rem;
+        padding: 0.25rem;
     }
 }
 
@@ -380,32 +348,27 @@ main {
     color: #232f3e;
 }
 
-.checkout-popup form {
-    display: flex;
-    flex-direction: column;
-}
-
 .checkout-popup label {
+    display: block;
     margin-bottom: 0.5rem;
-    font-weight: bold;
     color: #333;
 }
 
 .checkout-popup input {
+    width: 100%;
     padding: 0.5rem;
-    margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
+    margin-bottom: 1rem;
 }
 
 .checkout-popup button {
     background-color: #febd69;
     color: #111;
     border: none;
-    padding: 0.75rem;
+    padding: 0.5rem;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 1.125rem;
     transition: background-color 0.3s;
 }
 
@@ -413,106 +376,79 @@ main {
     background-color: #f3a847;
 }
 
-.checkout-popup .back-to-basket {
-    background-color: #007bff;
-    color: #fff;
-    margin-top: 1rem;
-    padding: 0.5rem;
-    font-size: 1rem;
+.checkout-popup .total-amount {
+    margin: 1rem 0;
+    font-size: 1.25rem;
+    color: #333;
+    text-align: center;
 }
 
-.checkout-popup .back-to-basket:hover {
+.checkout-popup .checkout-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.checkout-popup .checkout-btn:hover {
     background-color: #0056b3;
 }
+
 /* Footer Styles */
 footer {
     background-color: #232f3e;
     color: #fff;
-    padding: 2rem 1rem;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+    margin-top: 2rem;
 }
 
-footer .container {
-    max-width: 1200px;
-    margin: 0 auto;
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer .footer-links {
+    margin: 1rem 0;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 1rem;
 }
 
-footer .container .footer-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-}
-
-footer .container .footer-section .footer-item {
-    flex: 1;
-    min-width: 200px;
-}
-
-footer .container .footer-section h3 {
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-    color: #febd69;
-}
-
-footer .container .footer-section p, 
-footer .container .footer-section ul {
-    margin: 0;
-    padding: 0;
-    color: #ddd;
-}
-
-footer .container .footer-section ul {
-    list-style: none;
-    padding: 0;
-}
-
-footer .container .footer-section ul li {
-    margin-bottom: 0.5rem;
-}
-
-footer .container .footer-section ul li a {
+footer .footer-links a {
+    margin: 0 0.5rem;
     color: #fff;
-    text-decoration: none;
     transition: color 0.3s;
 }
 
-footer .container .footer-section ul li a:hover {
-    color: #febd69;
+footer .footer-links a:hover {
+    color: #f3a847;
 }
 
-footer .container .footer-bottom {
-    border-top: 1px solid #ddd;
-    padding-top: 1rem;
-    text-align: center;
+footer .footer-section {
+    margin: 1rem 0;
 }
 
-footer .container .footer-bottom p {
+footer .footer-section h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+}
+
+footer .footer-section p {
     margin: 0;
-    font-size: 0.875rem;
     color: #ddd;
 }
 
-/* Responsive Styles for Footer */
-@media (max-width: 768px) {
-    footer .container {
-        flex-direction: column;
-    }
+footer .footer-section .return-info {
+    font-size: 0.875rem;
+    color: #ccc;
+}
 
-    footer .container .footer-section {
-        flex-direction: column;
-    }
+footer .footer-section .return-info a {
+    color: #fff;
+}
 
-    footer .container .footer-section .footer-item {
-        margin-bottom: 2rem;
-    }
-
-    footer .container .footer-bottom {
-        border-top: none;
-        padding-top: 0;
-    }
+footer .footer-section .return-info a:hover {
+    color: #f3a847;
 }
 
     </style>
