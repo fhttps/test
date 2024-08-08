@@ -67,22 +67,25 @@ nav .search-bar {
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%;
+    width: calc(100% - 3rem); /* Adjust to account for button width */
 }
 
 .search-bar button {
-    padding: 0.5rem 1rem;
+    padding: 0;
     border: none;
-    background-color: #febd69;
-    color: #111;
-    border-radius: 4px;
+    background: url('search.png') no-repeat center center;
+    background-size: cover;
+    width: 2.5rem; /* Adjust to fit your image */
+    height: 2.5rem; /* Adjust to fit your image */
     cursor: pointer;
     transition: background-color 0.3s;
+    border-radius: 4px;
 }
 
 .search-bar button:hover {
-    background-color: #f3a847;
+    /* Optional: add hover effects or adjust image on hover */
 }
+
 
 .basket button {
     background-color: #febd69;
@@ -454,25 +457,26 @@ footer .footer-section .return-info a:hover {
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <a href=""><img src="m.png" alt="Logo"></a>
-            </div>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search for flowers...">
-                <button onclick="searchProduct()">🔍</button>
-            </div>
-            <div class="basket">
-                <button onclick="toggleBasket()">🧺 Basket</button>
-            </div>
-        </nav>
-    </header>
+<header>
+    <nav>
+        <div class="logo">
+            <a href="#"><img src="m.png" alt="Logo"></a>
+        </div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for flowers...">
+            <button onclick="searchProduct()"></button>
+        </div>
+        <div class="basket">
+            <button onclick="toggleBasket()">🧺 Basket</button>
+        </div>
+    </nav>
+</header>
+
     <nav class="secondary-nav">
         <ul>
             <li><a href="#">Daily Promos</a></li>
