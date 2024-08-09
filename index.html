@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Ensures compatibility with IE -->
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('tem.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 350px;
+            box-sizing: border-box;
+            text-align: center; /* Center text inside container */
+            margin-left: auto; /* Align to the right */
+            margin-right: 10%; /* Adjust as needed to move further right */
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #051c35;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .login-container button:hover {
+            background-color: #003d7a;
+        }
+        .forgot-password {
+            color: darkgrey;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .error-message,
+        .forgot-password-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #333;
+        }
+        @media (max-width: 600px) {
+            .login-container {
+                margin-right: 0;
+                padding: 20px;
+            }
+            .login-container h2 {
+                font-size: 20px;
+            }
+            .login-container input[type="text"],
+            .login-container input[type="password"] {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .login-container button {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Dashboard</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="error-message" class="error-message"></p>
+        <p class="forgot-password" onclick="forgotPassword()">Forgot Password?</p>
+        <p id="forgot-password-message" class="forgot-password-message"></p>
+        <footer>
+            ©2024. All Rights Reserved.
+        </footer>
+    </div>
+
+    <script>
+        function login() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var errorMessage = document.getElementById('error-message');
+            var forgotPasswordMessage = document.getElementById('forgot-password-message');
+
+            forgotPasswordMessage.textContent = ''; // Clear forgot password message
+
+            if (username === 'template' && password === 'plataform') {
+                // Store login state
+                localStorage.setItem('loggedIn', 'true');
+                window.location.href = 'second.html';
+            } else {
+                errorMessage.textContent = 'Incorrect username or password';
+            }
+        }
+
+        function forgotPassword() {
+            var forgotPasswordMessage = document.getElementById('forgot-password-message');
+            forgotPasswordMessage.textContent = 'This is a template. Log in: template // password : plataform';
+        }
+    </script>
+</body>
+</html>
