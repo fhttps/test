@@ -3,675 +3,1055 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Professional Flower Shop</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Info</title>
     <style>
- body {
+    body {
+    font-family: Arial;
+    background-color: #efedf9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 10px;
+}
+
+.navbar {
+    width: 100%;
+    max-width: 1200px;
+    background-color: #333;
+    color: white;
+    padding: 7px 10px;
+    margin: 0 auto 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.nav-item {
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    flex: 1 1 120px;
+    margin: 1px;
+}
+
+.nav-item h2 {
+    margin: 0;
+    padding: 10px 8px;
+    font-size: 15px;
+    transition: background-color 0.3s;
+    border-radius: 3px;
+}
+
+.nav-item h2:hover {
+    background-color: #555;
+}
+
+.nav-section {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: 300px;
+}
+
+.nav-item:hover .nav-section {
+    display: flex;
+}
+
+.restaurant-container {
+    margin-bottom: 5px;
+}
+
+.restaurant-container:last-child {
+    margin-bottom: 0;
+}
+
+.restaurant-name,
+.restaurant-address,
+.restaurant-phone,
+.restaurant-hours {
+    padding: 5px 0;
+    margin: 2px 0;
+}
+
+.restaurant-name {
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.restaurant-address,
+.restaurant-phone,
+.restaurant-hours {
+    padding: 5px 0;
+}
+
+
+
+.top-section {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+}
+
+.search-bar input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    flex: 1;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    background-color: #092645;
+    color: white;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
+
+.image-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px; /* Adjust the gap value as needed */
+}
+
+.image-links a img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+
+.image-links a img:hover {
+    transform: scale(1.1);
+}
+
+/* Carousel Styles */
+.carousel {
+    position: relative;
+    width: 97%;
+    max-width: 1210px;
+    margin: 20px auto;
+    overflow: hidden;
+    box-shadow: 0 18px 18px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.carousel img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.carousel-arrow.left {
+    left: 10px;
+}
+
+.carousel-arrow.right {
+    right: 10px;
+}
+
+/* Hidden class for zoomed image */
+.hidden {
+    display: none;
+}
+
+/* Responsive Grid Container */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Grid Item Styles */
+.room {
+    background-color: #ffffff;
+    box-shadow: 0 14px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.room img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Zoomed Image Styles */
+.zoomed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    cursor: zoom-out;
+}
+
+.zoomed img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 8px;
+}
+
+.zoomed.hidden {
+    display: none;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusts column size based on available width */
+    gap: 10px; /* Spacing between grid items */
+    max-width: 1200px; /* Limits maximum width of the container */
+    width: 100%; /* Ensures full width responsiveness */
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjusts columns for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        grid-template-columns: 1fr; /* Stacks items in a single column for very small screens */
+    }
+}
+
+
+.notes-container {
+  background-color: #f9f9f9; /* Background color for the notes container */
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 7.2px;
+  width: 97%;
+  max-width: 1205px;
+  margin: 15px auto;
+  box-sizing: border-box;
+  font-size: 20px;
+  position: relative;
+  z-index: 999;
+  box-shadow: 0 14px 18px rgba(0, 0, 0, 0.2); /* Optional: Shadow for the notes container */
+}
+
+.links-container {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-link {
+  display: inline-block;
+  font-size: 14px;
+  border: none;
+  background-color: #f9f9f9; /* Same as notes container */
+  color: #000000; /* Text color for links */
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+  padding: 5px 10px;
+  text-decoration: none;
+  box-shadow: 0 3.6px 7.2px rgba(0, 0, 0, 0.1); /* Optional: Shadow for links */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.icon-link:hover {
+  background-color: #e0e0e0; /* Slightly darker shade for hover effect */
+  color: #000000; /* Ensure text color is readable on hover */
+}
+
+
+.notes-container h2 {
+    margin-top: 0;
+}
+
+.notes-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notes-container li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notes-container li:last-child {
+    border-bottom: none;
+}
+
+.notes-container button {
+    background-color: #092645;
+    color: white;
+    border: none;
+    padding: 5px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .top-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-bar {
+        margin-bottom: 10px;
+    }
+
+    .carousel {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-item h2 {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .nav-item .nav-section {
+        width: 90%;
+        left: 5%;
+        transform: translateX(0);
+    }
+
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .image-links a img {
+        width: 30px;
+        height: 30px;
+    }
+}
+/* Print Navbar Styles */
+.print-navbar {
+  background-color: #f9f9f9; /* Match the background color with the notes container */
+  color: #000000; /* Black font color for text */
+  overflow: visible;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 4.5px;
+  margin-bottom: 2px;
+  width: 100%; /* Full width */
+  max-width: 1195px; /* Optional: max-width to control maximum size */
+  position: relative;
+  z-index: 997;
+  box-shadow: 0 14px 18px rgba(0, 0, 0, 0.2); /* Shadow for the navbar */
+}
+
+.print-navbar .nav-link {
+  text-decoration: none;
+  color: #000000; /* Black font color for links */
+  padding: 9px 13.5px;
+  margin: 4.5px;
+  overflow: hidden;
+  border-radius: 2.7px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #f9f9f9; /* Match the navbar background color */
+  display: flex;
+  align-items: center;
+  box-shadow: 0 3.6px 7.2px rgba(0, 0, 0, 0.1); /* Shadow for nav links */
+}
+
+.print-navbar .nav-link:hover {
+  background-color: #e0e0e0; /* Slightly darker shade for hover effect */
+  color: #000000; /* Ensure the text remains readable on hover */
+}
+
+/* Media Query for screens smaller than 768px (smartphones) */
+@media (max-width: 768px) {
+  .print-navbar {
+    padding: 2px; /* Reduce padding */
+  }
+  
+  .print-navbar .nav-link {
+    padding: 2px; /* Adjust padding for smaller links */
+    font-size: 14px; /* Decrease font size for smaller screens */
+    margin: 1px; /* Adjust margin for smaller spacing */
+  }
+}
+
+       .footer {
+ 
+            text-align: center;
+            padding: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            bottom: 0;
+            width: 100%;
             font-family: Arial, sans-serif;
+        }
+
+        .footer p {
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f7f7f7;
+            padding: 2px 0;
         }
 
-        /* Header Styles */
-        header {
-            background-color: #131A22;
-            color: #fff;
-            padding: 0.5rem 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        
+
+        @media (max-width: 768px) {
+            .footer {
+                padding: 10px;
+            }
+            
+            .social-media-icons .icon {
+                font-size: 14px;
+                margin: 0 2px;
+            }
         }
 
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
+        @media (max-width: 480px) {
+            .footer {
+                padding: 2px;
+            }
+            
         }
+        .log-off-button {
+  background-color: #460510; /* Dark red background color */
+  color: white; /* White text color for contrast */
+  border: none; /* Remove default border */
+  padding: 10px 10px; /* Padding inside the button */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 12px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for a slight 3D effect */
+}
 
-        .logo img {
-            height: 40px;
-        }
+.log-off-button:hover {
+  background-color: #a50f24; /* Slightly darker shade for hover effect */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 1rem;
-            margin: 0;
-            padding: 0;
-        }
+.log-off-button:focus {
+  outline: none; /* Remove default focus outline */
+}
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 0.5rem 0.75rem;
-            transition: background-color 0.3s;
-        }
-
-        nav ul li a:hover {
-            background-color: #37475a;
-            border-radius: 4px;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-            max-width: 950px;
-        }
-
-        .search-bar input {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: calc(100% - 3rem);
-        }
-
-        .search-bar button {
-            padding: 0;
-            border: none;
-            background: url('search.png') no-repeat center center;
-            background-size: cover;
-            width: 3rem;
-            height: 2.1rem;
-            cursor: pointer;
-        }
-
-        .basket {
-            display: flex;
-            align-items: center;
-        }
-
-        .basket button {
-            background: url('basket.png') no-repeat center center;
-            background-size: cover;
-            color: transparent;
-            border: none;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        /* Secondary Navbar Styles */
-        .secondary-nav {
-            background-color: #3a4b62;
-            padding: 0.5rem 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .secondary-nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .secondary-nav ul li {
-            margin: 0 0.5rem;
-        }
-
-        .secondary-nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            padding: 0.5rem;
-            transition: color 0.3s;
-        }
-
-        .secondary-nav ul li a:hover {
-            color: #dcdcdc;
-            background-color: #2c3b50;
-            border-radius: 4px;
-        }
-
-        /* Main Content Area */
-        main {
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .product {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .product:hover {
-            transform: translateY(-5px);
-        }
-
-        .product img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 0.5rem;
-        }
-
-        .product h2 {
-            margin-bottom: 0.5rem;
-            font-size: 1.25rem;
-            color: #333;
-        }
-
-        .product p {
-            margin-bottom: 0.5rem;
-            color: #777;
-        }
-
-        .product .quantity {
-            width: 50px;
-            text-align: center;
-            margin-bottom: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 0.25rem;
-        }
-
-        .product button {
-            background-color: #febd69;
-            color: #111;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .product button:hover {
-            background-color: #f3a847;
-        }
-
-         .basket-popup {
-            display: none;
-            position: fixed;
-            top: 20%;
-            right: 20px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-
-        .basket-popup.active {
-            display: block;
-        }
-
-        .basket-popup .close-popup {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #333;
-            cursor: pointer;
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-
-        .basket-popup h2 {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            text-align: center;
-            color: #232f3e;
-        }
-
-        .basket-popup ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .basket-popup li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 0.5rem;
-        }
-
-        .basket-popup li:last-child {
-            border-bottom: none;
-        }
-
-        .basket-popup .item-image {
-            flex-shrink: 0;
-            width: 60px;
-            height: 60px;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .basket-popup .item-image img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
-        .basket-popup .item-details {
-            flex-grow: 1;
-        }
-
-        .basket-popup .item-price {
-            text-align: right;
-        }
-
-        .basket-popup .basket-summary {
-            margin-top: 1rem;
-            text-align: right;
-            border-top: 1px solid #ddd;
-            padding-top: 1rem;
-        }
-
-        .basket-popup .basket-summary h3 {
-            margin: 0;
-            font-size: 1.25rem;
-            color: #232f3e;
-        }
-
-        .basket-popup .basket-summary p {
-            margin: 0;
-            font-size: 1.125rem;
-        }
-
-        .basket-popup .checkout-btn {
-            display: block;
-            width: 100%;
-            background-color: #febd69;
-            color: #111;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 4px;
-            cursor: pointer;
-            text-align: center;
-            font-size: 1.125rem;
-            margin-top: 1rem;
-            transition: background-color 0.3s;
-        }
-
-        .basket-popup .checkout-btn:hover {
-            background-color: #f3a847;
-        }
-
-        /* Checkout Popup Styles */
-        .checkout-popup {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            width: 400px;
-            background: #fff;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            display: none;
-            z-index: 1000;
-        }
-
-        .checkout-popup .close-checkout {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #333;
-            cursor: pointer;
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-
-        .checkout-popup h2 {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            color: #232f3e;
-        }
-
-        .checkout-popup label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .checkout-popup input,
-        .checkout-popup select {
-            width: calc(100% - 2rem);
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .checkout-popup button {
-            background-color: #febd69;
-            color: #111;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.125rem;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-
-        .checkout-popup button:hover {
-            background-color: #f3a847;
-        }
-
-        /* Footer Styles */
-        footer {
-            background-color: #131A22;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .social-media {
-            margin-bottom: 1rem;
-        }
-
-        .social-media a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 0.5rem;
-            font-size: 1.5rem;
-            transition: color 0.3s;
-        }
-
-        .social-media a:hover {
-            color: #febd69;
-        }
-
-        .back-to-main {
-            display: inline-block;
-            margin-top: 1rem;
-            color: #febd69;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        .back-to-main:hover {
-            color: #f3a847;
-        }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <a href="#"><img src="m.png" alt="Logo"></a>
-            </div>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search for flowers...">
-                <button onclick="searchProduct()"></button>
-            </div>
-        </nav>
-    </header>
-
-    <nav class="secondary-nav">
-        <ul>
-            <li><a href="#">Daily Promos</a></li>
-            <li><a href="#">Customer Favorites</a></li>
-            <li><a href="#">🆕New Arrivals</a></li>
-            <li><a href="#">🛒Best Sellers</a></li>
-            <li><a href="#">Seasonal Specials</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <div class="products" id="productList">
-            <div class="product" data-name="Rose Bouquet">
-                <img src="f.png" alt="Rose Bouquet">
-                <h2>Rose Bouquet</h2>
-                <p>Price: £29.99</p>
-                <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Rose Bouquet', 29.99)">Add to Basket</button>
-            </div>
-            <div class="product" data-name="Tulip Arrangement">
-                <img src="f.png" alt="Tulip Arrangement">
-                <h2>Tulip Arrangement</h2>
-                <p>Price: £24.99</p>
-                <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Tulip Arrangement', 24.99)">Add to Basket</button>
-            </div>
-            <div class="product" data-name="Orchid Pot">
-                <img src="f.png" alt="Orchid Pot">
-                <h2>Orchid Pot</h2>
-                <p>Price: £19.99</p>
-                <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Orchid Pot', 19.99)">Add to Basket</button>
-            </div>
-            <div class="product" data-name="Orchid">
-                <img src="f.png" alt="Orchid">
-                <h2>Orchid</h2>
-                <p>Price: £14.99</p>
-                <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Orchid', 14.99)">Add to Basket</button>
-            </div>
-            <div class="product" data-name="Rose Yellow">
-                <img src="f.png" alt="Rose Yellow">
-                <h2>Rose Yellow</h2>
-                <p>Price: £14.99</p>
-                <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Rose Yellow', 14.99)">Add to Basket</button>
-            </div>
-            <div class="product" data-name="Rose Blue">
-                <img src="f.png" alt="Rose Blue">
-                <h2>Rose Blue</h2>
-                <p>Price: £14.99</p>
-                <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Rose Blue', 14.99)">Add to Basket</button>
-            </div>
-            <div class="product" data-name="Orchid Orange">
-                <img src="f.png" alt="Orchid Orange">
-                <h2>Orchid Orange</h2>
-                <p>Price: £14.99</p>
-                <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Orchid Orange', 14.99)">Add to Basket</button>
-            </div>
-            <div class="product" data-name="Grey Tulip">
-                <img src="f.png" alt="Grey Tulip">
-                <h2>Grey Tulip</h2>
-                <p>Price: £14.99</p>
-                <input type="number" class="quantity" value="1" min="1">
-                <button onclick="addToBasket('Grey Tulip', 14.99)">Add to Basket</button>
-            </div>
-        </div>
-    </main>
-
-    <div class="basket-popup" id="basketPopup">
-        <button class="close-popup" onclick="toggleBasket()">✖</button>
-        <h2>🧺 Basket</h2>
-        <ul id="basketItems"></ul>
-        <button class="checkout-btn" onclick="openCheckout()">Checkout</button>
-    </div>
-
-    <div class="checkout-popup" id="checkoutPopup">
-        <button class="close-checkout" onclick="closeCheckout()">✖</button>
-        <h2>Checkout</h2>
-        <label for="name">Name</label>
-        <input type="text" id="name" placeholder="Enter your name">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter your email">
-        <label for="address">Address</label>
-        <input type="text" id="address" placeholder="Enter your address">
-        <label for="card-number">Credit Card Number</label>
-        <input type="text" id="card-number" placeholder="Enter your credit card number">
-        <label for="card-expiry">Expiry Date</label>
-        <input type="text" id="card-expiry" placeholder="MM/YY">
-        <label for="payment">Payment Method</label>
-        <select id="payment">
-            <option value="visa">Visa</option>
-            <option value="mastercard">MasterCard</option>
-            <option value="amex">American Express</option>
-        </select>
-        <button onclick="completePurchase()">Complete Purchase</button>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="social-media">
-                <a href="https://facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
-                <a href="https://twitter.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
-                <a href="https://linkedin.com" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-            <a href="index.html" class="back-to-main">Back to Main Page</a>
-            <br>
-            <p>&copy; 2024. All rights reserved.</p>
-        </div>
-    </footer>
-   <script>
-    const basketPopup = document.getElementById('basketPopup');
-    const checkoutPopup = document.getElementById('checkoutPopup');
-    const basketItems = document.getElementById('basketItems');
-    let basket = [];
-
-    // Mapping product names to image filenames
-    const imageMap = {
-        'Rose Bouquet': 'f.png',
-        'Tulip Arrangement': 'f.png',
-        'Orchid Pot': 'f.png',
-        'Orchid': 'f.png',
-        'Rose yellow': 'f.png',  // Adjust as needed
-        'Rose Blue': 'f.png',     // Adjust as needed
-        'Orchid orange': 'f.png', // Adjust as needed
-        'grey tulip': 'f.png'     // Adjust as needed
-    };
-
-    function toggleBasket() {
-        basketPopup.classList.toggle('active');
-    }
-
-    function addToBasket(productName, productPrice) {
-        const quantityInput = event.target.previousElementSibling;
-        const quantity = parseInt(quantityInput.value);
-        const productImage = imageMap[productName]; // Get image filename from map
-
-        const existingItem = basket.find(item => item.name === productName);
-
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            basket.push({ name: productName, price: productPrice, quantity: quantity, image: productImage });
-        }
-
-        updateBasketUI();
-        toggleBasket(); // Show the basket popup
-    }
-
-    function updateBasketUI() {
-        basketItems.innerHTML = '';
-        basket.forEach(item => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-                <div class="item-details">
-                    <span>${item.name}</span>
-                    <div class="basket-item-quantity">
-                        <button onclick="changeQuantity('${item.name}', -1)">-</button>
-                        <input type="number" value="${item.quantity}" readonly>
-                        <button onclick="changeQuantity('${item.name}', 1)">+</button>
-                    </div>
+     <div class="navbar">
+        <div class="nav-item">
+            <h2>Extensions</h2>
+            <div class="nav-section">
+                <div class="restaurant-container">
+                    <p class="restaurant-address">3022 - Hitesh</p>
                 </div>
-                <span class="item-total">£${(item.price * item.quantity).toFixed(2)}</span>
-                <button onclick="removeFromBasket('${item.name}')">Remove</button>
-            `;
-            basketItems.appendChild(li);
-        });
-    }
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4011 - Harry</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4057 - Kitchen</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4052 - Vivek</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4004 - Selz</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">3022 - Su</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4098 - Danielle</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4137 - Kiran</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">3030 - Brandon</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4086 - Sujeeth</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4034 - Fabiane</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4056 - Barbara</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4003 - Jude</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4055 - Charlie</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4066 - Frankie</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4069 - Canteen</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4018 - Malik</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4057 - Kitchen</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-address">4039 - Clare</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item">
+            <h2>Parking</h2>
+            <div class="nav-section">
+                <div class="restaurant-container">
+                    <p class="restaurant-name">CP Holdings</p>
+                    <p class="restaurant-address">Free</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Disabled badge / Blue badge</p>
+                    <p class="restaurant-address">Free</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">MCC</p>
+                    <p class="restaurant-address">£25</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">ECB</p>
+                    <p class="restaurant-address">£25</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Sky Sports</p>
+                    <p class="restaurant-address">£25</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Guests</p>
+                    <p class="restaurant-address">£30</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item">
+            <h2>Air</h2>
+            <div class="nav-section">
+                <div class="restaurant-container">
+                    <p class="restaurant-name">CCHC</p>
+                    <p class="restaurant-phone">Phone: 02088979984</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Crew Scheduling</p>
+                    <p class="restaurant-address">Pilots - 5200</p>
+                    <p class="restaurant-phone">FAs - 5201</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Discounts</p>
+                    <p class="restaurant-address">Leisure rate = 25% off best available Room Only</p>
+                    <p class="restaurant-phone">Breakfast = £9</p>
+                    <p class="restaurant-hours">25% off Restaurant and Room Service</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item">
+            <h2>Restaurant St John's Wood</h2>
+            <div class="nav-section">
+                <div class="restaurant-container">
+                    <p class="restaurant-name">The Ivy St. John's Wood</p>
+                    <p class="restaurant-address">120 St John's Wood High St, London NW8 7SG</p>
+                    <p class="restaurant-phone">Phone: 020 3096 9444</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Fri 8:00-23:00, Sat-Sun 9:00-23:00</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Fora St. John's Wood</p>
+                    <p class="restaurant-address">13-15 St John's Wood High St, London NW8 7NG</p>
+                    <p class="restaurant-phone">Phone: 020 7722 0555</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Fri 7:00-22:00, Sat-Sun 8:00-22:00</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">The Duke of York</p>
+                    <p class="restaurant-address">2 St Ann's Terrace, London NW8 6PJ</p>
+                    <p class="restaurant-phone">Phone: 020 7722 1933</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Sat 11:00-23:00, Sun 12:00-22:30</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item">
+            <h2>Restaurant Park Road</h2>
+            <div class="nav-section">
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Mumtaz Restaurant</p>
+                    <p class="restaurant-address">4-10 Park Rd, London NW1 4SH</p>
+                    <p class="restaurant-phone">Phone: 020 7723 0549</p>
+                    <p class="restaurant-hours">Hours: 12:00–15:00, 18:00–23:00</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">The Park Grill</p>
+                    <p class="restaurant-address">135 Park Road, London NW8 8JN</p>
+                    <p class="restaurant-phone">Phone: 020 7586 0123</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Sun 12:00-22:00</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Park Café</p>
+                    <p class="restaurant-address">140 Park Road, London NW8 7JB</p>
+                    <p class="restaurant-phone">Phone: 020 7483 4310</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Fri 7:30-18:00, Sat-Sun 8:00-17:00</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item">
+            <h2>Fish & Chips</h2>
+            <div class="nav-section">
+                <div class="restaurant-container">
+                    <p class="restaurant-name">The SeaShell of Lisson Grove</p>
+                    <p class="restaurant-address">49-51 Lisson Grove, London NW1 6UH</p>
+                    <p class="restaurant-phone">Phone: 020 7224 9000</p>
+                    <p class="restaurant-hours">Opening Hours: 12:00-22:00 (Sun: 12:00-19:00)</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item">
+            <h2>Restaurant Baker Street</h2>
+            <div class="nav-section">
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Pizza Express</p>
+                    <p class="restaurant-address">10 Baker Street, London W1U 3AA</p>
+                    <p class="restaurant-phone">Phone: 020 7487 4550</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Sun 11:30-23:00</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Nando's Baker Street</p>
+                    <p class="restaurant-address">15 Baker Street, London W1U 8EE</p>
+                    <p class="restaurant-phone">Phone: 020 7486 6226</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Sun 11:00-22:30</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Zizzi</p>
+                    <p class="restaurant-address">19 Baker Street, London W1U 8EQ</p>
+                    <p class="restaurant-phone">Phone: 020 7935 1379</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Sun 12:00-23:00</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item">
+            <h2>Lords Cricket Ground</h2>
+            <div class="nav-section">
+                <div class="restaurant-container">
+                    <p class="restaurant-name">MCC Museum</p>
+                    <p class="restaurant-address">Explore the history of cricket at the MCC Museum.</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Lords Opening Times</p>
+                    <p class="restaurant-address">Opening Hours: Mon-Sun 10:00-17:00</p>
+                </div>
+                <div class="restaurant-container">
+                    <p class="restaurant-name">Lords Tavern</p>
+                    <p class="restaurant-address">Phone: 020 7616 8689</p>
+                    <p class="restaurant-hours">Opening Hours: Mon-Sun 11:00-23:00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="top-section">
+        <div class="search-bar">
+            <input type="text" placeholder="Search Google">
+            <button onclick="searchGoogle()">Search</button>
+        </div>
+        <br>    <br>
+         <div class="image-links">
+            <a href="https://mtce2.oraclehospitality.eu-frankfurt-1.ocs.oraclecloud.com/OPERA9/opera/operacloud/faces/opera-cloud-index/OperaCloud" target="_blank"><img src="opera.png" alt="Image 1"></a>
+            <a href="https://danubius.omni-clean.net/main/login/?backurl=L21haW50ZW5hbmNI" target="_blank"><img src="omni.png" alt="Image 6"></a>
+            <a href="https://provider.apihotels.com/ACESSUPPLIER/faces/login.xhtml" target="_blank"><img src="api.png" alt="Image 2"></a>
+             <a href="https://www.heathrow.com/arrivals" target="_blank"><img src="arrivals.png" alt="Image 9"></a>
+            <a href="https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=155&ct=1720298751&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fcobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26nlp%3d1%26RpsCsrfState%3d42ba129a-7ae4-8bd9-ab5b-568378723187&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c" target="_blank"><img src="outlook.png" alt="Image 8"></a>
+            <a href="https://secure.fourth.com/fmlogin" target="_blank"><img src="fourth.png" alt="Image 3"></a>
+            <a href="https://dhrp.tempus.biz/auth/login" target="_blank"><img src="tempus.png" alt="Image 3"></a>
+            <a href="https://www.expediapartnercentral.com/Account/Logon?returnUrl=https%3A%2F%2Fwww.expediapartnercentral.com%2F" target="_blank"><img src="expedia.png" alt="Image 4"></a>
+            <a href="https://ycs.agoda.com/mldc/en-us/public/login" target="_blank"><img src="agoda.png" alt="Image 5"></a>
+            <a href="https://account.booking.com/sign-in?op_token=EgVvYXV0aCKWAQoUMGNMSGY2TWZWVEZaOE51RXlMemkSCWF1dGhvcml6ZRolaHR0cHM6Ly9wYXJ0bmVyLmJvb2tpbmcuY29tL2F1dGhvcml6ZSpGeyJkZXN0aW5hdGlvbl91cmwiOiJodHRwczpcL1wvcGFydG5lci5ib29raW5nLmNvbVwvZW4tZ2JcL215LXByb2ZpbGUifUIEY29kZSoSMM_3usb4jic6AEIAWJnVprQG" target="_blank"><img src="booking.png" alt="Image 7"></a>
+            <a href="https://www.tripadvisor.co.uk/Hotel_Review-g186338-d193129-Reviews-Danubius_Hotel_Regents_Park-London_England.html" target="_blank"><img src="trip.png" alt="Image 9"></a>
+            <a href="http://10.2.10.120/ajs/guest.html#!/rooms" target="_blank"><img src="ambience.png" alt="Image 9"></a>
+            <a href="http://dhsa01:8100/index.html#!/login" target="_blank"><img src="salto.png" alt="Image 9"></a>
+             <a href="http://10.2.10.29/dashboard/Account/Login?ReturnUrl=%2Fdashboard%2FWakeup" target="_blank"><img src="tiger.png" alt="Image 9"></a>
+             <a href="https://webadmin.cardnet.hu/webadmin/login.seam?cid=10382" target="_blank"><img src="cardnet.png" alt="Image 9"></a>
+        </div>
+       <button class="log-off-button" onclick="logOff()">Log Off</button>
 
-    function changeQuantity(productName, change) {
-        const item = basket.find(item => item.name === productName);
-        if (item) {
-            item.quantity += change;
-            if (item.quantity <= 0) {
-                removeFromBasket(productName);
-            } else {
-                updateBasketUI();
-            }
+    </div>
+    <div class="carousel">
+        <button class="carousel-arrow left" onclick="showPreviousItem()">&#10094;</button>
+        <div class="carousel-inner">
+            <div class="carousel-item">
+                <img src="1.png" alt="Image 1">
+            </div>
+            <div class="carousel-item">
+                <img src="2.png" alt="Image 2">
+            </div>
+            <div class="carousel-item">
+                <img src="3.png" alt="Image 3">
+            </div>
+        </div>
+        <button class="carousel-arrow right" onclick="showNextItem()">&#10095;</button>
+    </div>
+    <br>
+    <div class="container">
+        <div class="room">
+            <img src="double.png" alt="Double Room">
+        </div>
+        <div class="room">
+            <img src="twin.png" alt="Twin Room">
+        </div>
+        <div class="room">
+            <img src="king.png" alt="King Room">
+        </div>
+        <div class="room">
+            <img src="family.png" alt="Family Room">
+        </div>
+        <div class="room">
+            <img src="suite.png" alt="Suite">
+        </div>
+        <a href="https://web-booking.free-now.com/bookings" target="_blank">
+            <div class="s">
+                <img src="free.png" alt="freenow">
+            </div>
+        </a>
+    </div>
+    <br>
+    <div class="print-navbar">
+    <a href="2nd.png" class="nav-link" target="_blank">🍀2nd Floor</a>
+    <a href="3rd.png" class="nav-link" target="_blank">🍀3rd Floor</a>
+    <a href="4th.png" class="nav-link" target="_blank">🛌🏻4th Floor</a>
+    <a href="5th.png" class="nav-link" target="_blank">🛌🏻5th</a>
+    <a href="6th.png" class="nav-link" target="_blank">🛌🏻6th</a>
+    <a href="7th.png" class="nav-link" target="_blank">🛌🏻7th</a>
+    <a href="8th.png" class="nav-link" target="_blank">🛌🏻8th</a>
+    <a href="9th.png" class="nav-link" target="_blank">🛌🏻9th</a>
+    <a href="10th.png" class="nav-link" target="_blank">🍀10th Floor</a>
+    <a href="11th.png" class="nav-link" target="_blank">🛌🏻11th Floor</a>
+    <a href="12th.png" class="nav-link" target="_blank">🪜12th Floor</a>
+</div>
+
+    <div class="notes-container">
+        <div class="links-container">
+            <a href="https://board-81635.web.app" class="icon-link" target="_blank">💬Chat</a>
+            <a href="upsell.jpg" class="icon-link" target="_blank">💸Upsell</a>
+            <a href="phone.jpg" class="icon-link" target="_blank">💡Phone Instructions</a>
+            <a href="safe.jpg" class="icon-link" target="_blank">💡Safe Instructions</a>
+        </div>
+        <h2></h2>
+        <input type="text" id="noteInput" placeholder="Add a new note">
+        <button onclick="addNote()">Add Note</button>
+        <ul id="notesList"></ul>
+    </div>
+    
+    
+    <div class="print-navbar">
+        <a href="pdq.doc" class="nav-link">PDQ Refund</a>
+        <a href="rebate.docx" class="nav-link">Rebate Form</a>
+        <a href="group.doc" class="nav-link">Group Template</a>
+        <a href="pet.pdf" class="nav-link">Pet Policy</a>
+        <a href="Air.xlsx" class="nav-link">Air Template</a>
+        <a href="smoking.docx" class="nav-link">Smoking Penalty</a>
+        <a href="float.png" class="nav-link">Float cash</a>
+        <a href="form.docx" class="nav-link">3rd Party Aut</a>
+        <a href="fbcricket.png" class="nav-link">FeB cricket times</a>
+         <a href="disclaimer.doc" class="nav-link">Disclaimer</a>
+         <a href="ZIPBEDS.xlsx" class="nav-link">ZIPBEDS</a>
+         <a href="evacuation.png" class="nav-link">Evacuation form</a>
+         <a href="wallets.docx" class="nav-link">Wallets</a>
+         <a href="menu.png" class="nav-link">Menu</a>
+        <a href="move.png" class="nav-link">Room Move form</a>
+        <a href="regcard.png" class="nav-link">Reg Card</a>
+    </div>
+    <br>
+   <div class="print-navbar">
+<a href="paddington.png" class="nav-link" target="_blank">🗺️Paddington Station</a>
+             <a href="stpancras.png" class="nav-link" target="_blank">🗺️St. Pancras</a>
+             <a href="harrods.png" class="nav-link" target="_blank">🗺️Harrods</a>
+            <a href="covent.png" class="nav-link" target="_blank">🗺️Covent Garden</a>
+            <a href="camden.png" class="nav-link" target="_blank">🗺️Camden Town</a>     
+      <a href="oxfordst.png" class="nav-link" target="_blank">🗺️Oxford Street</a>
+            <a href="bigben.png" class="nav-link" target="_blank">🗺️Big Ben</a>
+            <a href="tower.png" class="nav-link" target="_blank">🗺️Tower Bridge</a>
+       <a href="lbs.png" class="nav-link" target="_blank">🗺️LBS</a>
+   </div>
+ 
+    <br>    <br>    <br>
+         <br>    <br>    <br>
+  <div class="footer">
+        <p>&copy; 2024 . All rights reserved.</p>
+        </div>
+    </div>
+    <script>
+        function searchGoogle() {
+            const query = document.querySelector('.search-bar input').value;
+            const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            window.open(url, '_blank');
         }
-    }
+        document.addEventListener('DOMContentLoaded', () => {
+    const navItems = document.querySelectorAll('.nav-item');
 
-    function removeFromBasket(productName) {
-        basket = basket.filter(item => item.name !== productName);
-        updateBasketUI();
-    }
+    // Add click event listener to each nav-item
+    navItems.forEach(navItem => {
+        navItem.addEventListener('click', () => {
+            const navSection = navItem.querySelector('.nav-section');
 
-    function openCheckout() {
-        checkoutPopup.style.display = 'block';
-    }
-
-    function closeCheckout() {
-        checkoutPopup.style.display = 'none';
-    }
-
-    function completePurchase() {
-        const email = document.getElementById('email').value;
-        const totalAmount = basket.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-
-        alert(`Thank you for your purchase! You will receive an invoice at the following email: ${email}. Total amount paid: £${totalAmount}.`);
-
-        // Clear basket and form inputs
-        basket = [];
-        updateBasketUI();
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('address').value = '';
-        document.getElementById('card-number').value = '';
-        document.getElementById('card-expiry').value = '';
-        document.getElementById('payment').value = 'visa';
-
-        // Close checkout popup and redirect to main page
-        closeCheckout();
-        window.location.href = 'sales.html'; // Redirect to main page
-    }
-
-    function searchProduct() {
-        const query = document.getElementById('searchInput').value.toLowerCase();
-        const products = document.querySelectorAll('.product');
-        products.forEach(product => {
-            const productName = product.getAttribute('data-name').toLowerCase();
-            if (productName.includes(query)) {
-                product.style.display = 'block';
+            // Toggle visibility of nav-section
+            if (navSection.style.display === 'flex') {
+                navSection.style.display = 'none'; // Hide the nav-section
             } else {
-                product.style.display = 'none';
+                // First hide all other nav-sections
+                navItems.forEach(item => {
+                    const section = item.querySelector('.nav-section');
+                    if (section !== navSection && section.style.display === 'flex') {
+                        section.style.display = 'none';
+                    }
+                });
+
+                navSection.style.display = 'flex'; // Show the nav-section
             }
         });
+    });
+});
+
+    
+document.addEventListener('DOMContentLoaded', () => {
+    const items = document.querySelectorAll('.carousel-item');
+    let currentIndex = 0;
+
+    function showNextItem() {
+        if (currentIndex < items.length - 1) {
+            currentIndex++;
+        } else {
+            currentIndex = 0;
+        }
+        updateCarousel();
     }
 
-    // Event listeners for closing popups
-    document.querySelector('.basket-popup .close-popup').addEventListener('click', () => {
-        basketPopup.classList.remove('active');
+    function showPreviousItem() {
+        if (currentIndex > 0) {
+            currentIndex--;
+        } else {
+            currentIndex = items.length - 1;
+        }
+        updateCarousel();
+    }
+
+    function updateCarousel() {
+        const carouselInner = document.querySelector('.carousel-inner');
+        carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    // Initial setup
+    updateCarousel();
+
+    // Event listeners for carousel arrows
+    document.querySelector('.carousel-arrow.left').addEventListener('click', showPreviousItem);
+    document.querySelector('.carousel-arrow.right').addEventListener('click', showNextItem);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('.container .room img');
+    const zoomed = document.createElement('div');
+    zoomed.className = 'zoomed hidden';
+    document.body.appendChild(zoomed);
+
+    const zoomedImage = document.createElement('img');
+    zoomed.appendChild(zoomedImage);
+    
+    images.forEach(image => {
+        image.addEventListener('click', () => {
+            zoomedImage.src = image.src;
+            zoomed.classList.remove('hidden');
+        });
     });
 
-    document.querySelector('.checkout-popup .close-checkout').addEventListener('click', () => {
-        checkoutPopup.style.display = 'none';
+    zoomed.addEventListener('click', () => {
+        zoomed.classList.add('hidden');
     });
-</script>
+});
 
+    // Function to add a new note
+        function addNote() {
+            const noteInput = document.getElementById('noteInput');
+            const noteText = noteInput.value.trim();
+            if (noteText === '') return;
+
+            // Create a unique ID for the note
+            const noteId = new Date().getTime().toString();
+
+            // Create the note object
+            const note = {
+                id: noteId,
+                text: noteText
+            };
+
+            // Add the note to localStorage
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.push(note);
+            localStorage.setItem('notes', JSON.stringify(notes));
+
+            // Add the note to the UI
+            displayNotes();
+
+            // Clear the input field
+            noteInput.value = '';
+        }
+
+        // Function to delete a note
+        function deleteNote(noteId) {
+            // Remove the note from localStorage
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes = notes.filter(note => note.id !== noteId);
+            localStorage.setItem('notes', JSON.stringify(notes));
+
+            // Update the UI
+            displayNotes();
+        }
+
+        // Function to display notes
+        function displayNotes() {
+            const notesList = document.getElementById('notesList');
+            notesList.innerHTML = '';
+
+            // Retrieve notes from localStorage
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+            // Render each note
+            notes.forEach(note => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${note.text}</span>
+                    <button onclick="deleteNote('${note.id}')">Delete</button>
+                `;
+                notesList.appendChild(li);
+            });
+        }
+
+        // Load notes when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            displayNotes();
+        });
+
+        // Function to clear all notes (if needed)
+        function clearAllNotes() {
+            localStorage.removeItem('notes');
+            displayNotes();
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbarItems = document.querySelectorAll('#print-navbar li');
+
+            navbarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const file = this.getAttribute('data-file');
+                    if (file === 'group.doc') {
+                        window.open(file, '_blank'); // Open Word file in new tab
+                    } else {
+                        printFile(file); // Print image file
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', function(event) {
+                let focusedElement = document.activeElement;
+                if (focusedElement.tagName === 'LI' && focusedElement.parentElement.parentElement.id === 'print-navbar') {
+                    if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+                        event.preventDefault();
+                        let nextElement = focusedElement.nextElementSibling;
+                        if (nextElement) {
+                            nextElement.focus();
+                        }
+                    } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+                        event.preventDefault();
+                        let previousElement = focusedElement.previousElementSibling;
+                        if (previousElement) {
+                            previousElement.focus();
+                        }
+                    }
+                }
+            });
+        });
+
+       function printImage(imageSrc) {
+            const originalContent = document.body.innerHTML;
+            const imageContent = `<div style="display: flex; justify-content: center; align-items: center; height: 60vh;"><img src="${imageSrc}" style="max-width: 100%; max-height: 100%;" /></div>`;
+            
+            document.body.innerHTML = imageContent;
+
+            window.print();
+
+            document.body.innerHTML = originalContent;
+        }
+           document.addEventListener('DOMContentLoaded', function() {
+            // Check login state
+            if (localStorage.getItem('loggedIn') !== 'true') {
+                window.location.href = 'index.html';
+            }
+        });
+
+        function logOff() {
+            // Clear login state
+            localStorage.removeItem('loggedIn');
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>
