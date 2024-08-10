@@ -47,11 +47,7 @@
             display: block;
             margin-bottom: 5px;
         }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
+        .form-group input,
         .form-group select {
             width: 100%;
             padding: 8px;
@@ -77,6 +73,10 @@
         .room.vacant {
             background-color: #d4edda;
         }
+        .reservation-list div,
+        .issue-list div {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -91,7 +91,7 @@
         <!-- Housekeeping Section -->
         <div id="housekeeping" class="section hidden">
             <h2>Housekeeping</h2>
-            <div class="room-status">
+            <div class="room-status" id="housekeeping-room-status">
                 <!-- Room status will be dynamically inserted here -->
             </div>
         </div>
@@ -130,6 +130,18 @@
                     </select>
                 </div>
                 <button class="button" onclick="chargeCreditCard()">Charge Card</button>
+                <div id="billing-info" class="hidden">
+                    <h3>Charges</h3>
+                    <div id="billing-summary">
+                        <!-- Billing summary will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+            <div id="current-reservations">
+                <h3>Current Reservations</h3>
+                <div class="reservation-list" id="reservation-list">
+                    <!-- Reservations will be dynamically inserted here -->
+                </div>
             </div>
         </div>
 
@@ -150,10 +162,6 @@
                 </div>
                 <button class="button" onclick="makeReservation()">Reserve</button>
             </div>
-            <div id="reservation-list">
-                <h3>Current Reservations</h3>
-                <!-- Reservations will be dynamically inserted here -->
-            </div>
         </div>
 
         <!-- Maintenance Section -->
@@ -170,6 +178,12 @@
                 <input type="text" id="maintenance-issue" placeholder="Describe the issue">
             </div>
             <button class="button" onclick="reportIssue()">Report Issue</button>
+            <div id="issue-list">
+                <h3>Reported Issues</h3>
+                <div class="issue-list" id="issue-list-content">
+                    <!-- Issues will be dynamically inserted here -->
+                </div>
+            </div>
         </div>
     </div>
     <script>
@@ -177,16 +191,18 @@
         const housekeepingStatus = JSON.parse(localStorage.getItem('housekeepingStatus')) || Array(totalRooms).fill('vacant');
         const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
         const issues = JSON.parse(localStorage.getItem('issues')) || [];
-
+        
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
             if (sectionId === 'housekeeping') updateHousekeeping();
+            if (sectionId === 'frontdesk') updateFrontDesk();
             if (sectionId === 'reservation') updateReservation();
+            if (sectionId === 'maintenance') updateMaintenance();
         }
 
         function updateHousekeeping() {
-            const roomStatusDiv = document.querySelector('#housekeeping .room-status');
+            const roomStatusDiv = document.querySelector('#housekeeping-room-status');
             roomStatusDiv.innerHTML = '';
             for (let i = 1; i <= totalRooms; i++) {
                 const status = housekeepingStatus[i-1];
@@ -195,6 +211,18 @@
                 roomDiv.innerHTML = `<strong>Room ${i}</strong><br>Status: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
                 roomStatusDiv.appendChild(roomDiv);
             }
+        }
+
+        function updateFrontDesk() {
+            const reservationListDiv = document.querySelector('#reservation-list');
+            reservationListDiv.innerHTML = '';
+            reservations.forEach(res => {
+                const resDiv = document.createElement('div');
+                resDiv.textContent = `Booking Number: ${res.bookingNumber}, Guest: ${res.guestName}, Room: ${res.roomNumber}`;
+                reservationListDiv.appendChild(resDiv);
+            });
+            const billingInfoDiv = document.querySelector('#billing-info');
+            billingInfoDiv.classList.add('hidden');
         }
 
         function updateReservation() {
@@ -207,12 +235,24 @@
                 roomSelect.appendChild(option);
             }
 
-            const reservationListDiv = document.getElementById('reservation-list');
-            reservationListDiv.innerHTML = '<h3>Current Reservations</h3>';
-            reservations.forEach(res => {
-                const resDiv = document.createElement('div');
-                resDiv.textContent = `Booking Number: ${res.bookingNumber}, Guest: ${res.guestName}, Room: ${res.roomNumber}`;
-                reservationListDiv.appendChild(resDiv);
+            updateFrontDesk();
+        }
+
+        function updateMaintenance() {
+            const roomSelect = document.getElementById('maintenance-room');
+            roomSelect.innerHTML = '';
+            for (let i = 1; i <= totalRooms; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `Room ${i}`;
+                roomSelect.appendChild(option);
+            }
+            const issueListDiv = document.querySelector('#issue-list-content');
+            issueListDiv.innerHTML = '';
+            issues.forEach(issue => {
+                const issueDiv = document.createElement('div');
+                issueDiv.textContent = `Room ${issue.roomNumber}: ${issue.issue}`;
+                issueListDiv.appendChild(issueDiv);
             });
         }
 
@@ -225,6 +265,7 @@
             localStorage.setItem('reservations', JSON.stringify(reservations));
 
             updateReservation();
+            updateFrontDesk();
         }
 
         function checkIn() {
@@ -235,7 +276,7 @@
                 localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
                 localStorage.setItem('reservations', JSON.stringify(reservations.filter(r => r.bookingNumber != bookingNumber)));
                 updateHousekeeping();
-                updateReservation();
+                updateFrontDesk();
             } else {
                 alert('Reservation not found.');
             }
@@ -249,7 +290,7 @@
                 localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
                 localStorage.setItem('reservations', JSON.stringify(reservations.filter(r => r.bookingNumber != bookingNumber)));
                 updateHousekeeping();
-                updateReservation();
+                updateFrontDesk();
             } else {
                 alert('Reservation not found.');
             }
@@ -262,6 +303,7 @@
             issues.push({ roomNumber, issue });
             localStorage.setItem('issues', JSON.stringify(issues));
 
+            updateMaintenance();
             alert('Issue reported.');
         }
 
@@ -269,14 +311,28 @@
             const bookingNumber = document.getElementById('billing-booking-number').value;
             const cardType = document.getElementById('billing-credit-card').value;
 
-            // Simple simulation of charging the card
-            alert(`Charging ${cardType} card for booking number ${bookingNumber}.`);
+            const res = reservations.find(r => r.bookingNumber == bookingNumber);
+            if (res) {
+                const charge = calculateCharge(res.roomNumber);
+                const billingSummaryDiv = document.querySelector('#billing-summary');
+                billingSummaryDiv.innerHTML = `Booking Number: ${bookingNumber}<br>Guest Name: ${res.guestName}<br>Room Number: ${res.roomNumber}<br>Total Charge: $${charge}`;
+                document.querySelector('#billing-info').classList.remove('hidden');
+            } else {
+                alert('Reservation not found.');
+            }
+        }
+
+        function calculateCharge(roomNumber) {
+            // Simple charge calculation (e.g., $100 per night)
+            return 100;
         }
 
         // Initialize reservation options
         document.addEventListener('DOMContentLoaded', () => {
             updateHousekeeping();
             updateReservation();
+            updateFrontDesk();
+            updateMaintenance();
         });
     </script>
 </body>
