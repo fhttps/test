@@ -3,433 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Operational Platform</title>
+    <title>Hotel Lobby Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .nav-menu {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-        }
-
-        .nav-menu a {
-            padding: 15px 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        .nav-menu a:hover {
-            background-color: #555;
-        }
-
-        .container {
-            flex: 1;
-            padding: 20px;
-            display: none;
-        }
-
-        .login-container {
+            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #333;
+            margin: 0;
         }
 
-        .login-box {
+        #game-container {
+            text-align: center;
+            position: relative;
+        }
+
+        #lobby {
+            position: relative;
+            width: 600px;
+            height: 400px;
             background-color: #fff;
-            padding: 20px;
+            border: 2px solid #000;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .person {
+            width: 150px;
+            height: 200px;
+            border: 2px solid #000;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .login-box input[type="text"],
-        .login-box input[type="password"] {
-            width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .login-box input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #5cb85c;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .login-box input[type="submit"]:hover {
-            background-color: #4cae4c;
-        }
-
-        .floor {
-            margin-bottom: 30px;
-        }
-
-        .floor h3 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .room-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .room {
             background-color: #fff;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            width: 250px;
-            text-align: center;
-        }
-
-        .room h3 {
-            margin: 10px 0;
-        }
-
-        .room button {
-            padding: 10px;
-            background-color: #5cb85c;
-            border: none;
-            color: white;
-            border-radius: 5px;
+            position: absolute;
             cursor: pointer;
-            font-size: 16px;
         }
 
-        .room button:hover {
-            background-color: #4cae4c;
+        #concierge {
+            top: 50px;
+            left: 100px;
         }
 
-        .form-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
-            margin: 20px auto;
+        #reception1 {
+            top: 50px;
+            left: 300px;
+        }
+
+        #reception2 {
+            top: 50px;
+            left: 500px;
+        }
+
+        .name {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .face {
+            width: 100%;
+            height: 100px;
+            background-color: #ddd;
+            border-radius: 10px;
+        }
+
+        #character {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            top: 200px;
+            left: 275px;
+        }
+
+        .hidden {
             display: none;
         }
 
-        .form-container input[type="text"],
-        .form-container input[type="number"],
-        .form-container input[type="email"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        #interaction-message {
+            font-size: 18px;
+            margin-bottom: 20px;
         }
 
-        .form-container input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #5cb85c;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .form-container input[type="submit"]:hover {
-            background-color: #4cae4c;
-        }
-
-        .status {
-            font-size: 14px;
-            color: #888;
-        }
-
-        .occupied {
-            background-color: #f44336;
-        }
-
-        .housekeeping {
-            background-color: #ffeb3b;
-            color: black;
-        }
-
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: auto;
+        #game-status {
+            font-size: 24px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-
-<header>
-    <h1>Hotel Management System</h1>
-</header>
-
-<div class="nav-menu" id="nav-menu" style="display:none;">
-    <a href="#" onclick="showSection('rooms-section')">Rooms</a>
-    <a href="#" onclick="showSection('reservations-section')">Reservations</a>
-    <a href="#" onclick="showSection('housekeeping-section')">Housekeeping</a>
-    <a href="#" onclick="showSection('activity-log-section')">Activity Log</a>
-</div>
-
-<div class="login-container" id="login-container">
-    <div class="login-box">
-        <h2>Hotel Login</h2>
-        <input type="text" id="admin" placeholder="Admin Name" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <input type="submit" value="Login" onclick="login()">
+    <div id="game-container">
+        <div id="lobby">
+            <div id="concierge" class="person">
+                <div class="name">John (Concierge)</div>
+                <div class="face"></div>
+            </div>
+            <div id="reception1" class="person">
+                <div class="name">Diego (Receptionist)</div>
+                <div class="face"></div>
+            </div>
+            <div id="reception2" class="person">
+                <div class="name">Saroj (Receptionist)</div>
+                <div class="face"></div>
+            </div>
+            <div id="character"></div>
+            <div id="duty-manager" class="hidden">
+                <div class="name">Aditi (Duty Manager)</div>
+                <div class="face"></div>
+            </div>
+        </div>
+        <div id="interaction-message"></div>
+        <div id="game-status" class="hidden"></div>
     </div>
-</div>
 
-<div class="container" id="rooms-section">
-    <h2>Room Management</h2>
-    <div id="floors">
-        <!-- Floors and Rooms will be generated here by JS -->
-    </div>
-</div>
+    <script>
+        let interactionCount = 0;
+        const character = document.getElementById('character');
+        const interactionMessage = document.getElementById('interaction-message');
+        const dutyManager = document.getElementById('duty-manager');
+        const gameStatus = document.getElementById('game-status');
+        const lobby = document.getElementById('lobby');
 
-<div class="container" id="reservations-section">
-    <h2>Reservations</h2>
-    <!-- Reservation content will go here -->
-</div>
+        const people = {
+            concierge: document.getElementById('concierge'),
+            reception1: document.getElementById('reception1'),
+            reception2: document.getElementById('reception2')
+        };
 
-<div class="container" id="housekeeping-section">
-    <h2>Housekeeping Management</h2>
-    <!-- Housekeeping content will go here -->
-</div>
-
-<div class="container" id="activity-log-section">
-    <h2>Activity Log</h2>
-    <!-- Activity log content will go here -->
-</div>
-
-<div class="form-container" id="checkin-form">
-    <h2>Check-in Guest</h2>
-    <form id="guestForm">
-        <input type="text" id="guestName" placeholder="Guest Name" required>
-        <input type="number" id="guestsCount" placeholder="Number of Guests" required>
-        <input type="email" id="guestEmail" placeholder="Guest Email" required>
-        <input type="text" id="guestID" placeholder="Guest ID/Passport" required>
-        <input type="text" id="guestAddress" placeholder="Guest Address" required>
-        <input type="text" id="guestPhone" placeholder="Guest Phone" required>
-        <input type="submit" value="Check In" onclick="checkInGuest()">
-    </form>
-</div>
-
-<div class="form-container" id="billing-form">
-    <h2>Billing</h2>
-    <form id="billingForm">
-        <p>Room: <span id="billing-room"></span></p>
-        <input type="text" id="chargeDescription" placeholder="Charge Description" required>
-        <input type="number" id="chargeAmount" placeholder="Amount (£)" required>
-        <input type="text" id="cardNumber" placeholder="Credit Card Number" required>
-        <input type="text" id="cardExpiry" placeholder="Expiry Date (MM/YY)" required>
-        <input type="text" id="cardCVV" placeholder="CVV" required>
-        <input type="submit" value="Post Charge" onclick="postCharge()">
-    </form>
-</div>
-
-<footer>
-    <p>&copy; 2024 Hotel Management System. All rights reserved.</p>
-</footer>
-
-<script>
-    // Rooms Data
-    const rooms = [
-        { id: 1, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 2, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 3, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 4, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 5, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 6, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 7, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 8, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 9, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 10, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
-        { id: 11, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 12, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 13, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 14, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 15, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 16, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 17, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 18, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 19, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 20, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
-        { id: 21, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
-        { id: 22, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
-        { id: 23, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
-        { id: 24, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
-        { id: 25, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
-    ];
-
-    let selectedRoom = null;
-    let activityLog = [];
-
-    function login() {
-        const adminName = document.getElementById('admin').value;
-        const password = document.getElementById('password').value;
-
-        if (adminName === 'admin' && password === '101010') {
-            document.getElementById('login-container').style.display = 'none';
-            document.getElementById('nav-menu').style.display = 'flex';
-            showSection('rooms-section');
-            generateFloors();
-        } else {
-            alert('Invalid login details');
+        function isNearby(elem, distance = 50) {
+            const characterRect = character.getBoundingClientRect();
+            const elemRect = elem.getBoundingClientRect();
+            return !(elemRect.right < characterRect.left - distance ||
+                     elemRect.left > characterRect.right + distance ||
+                     elemRect.bottom < characterRect.top - distance ||
+                     elemRect.top > characterRect.bottom + distance);
         }
-    }
 
-    function showSection(sectionId) {
-        const sections = document.querySelectorAll('.container');
-        sections.forEach(section => section.style.display = 'none');
-        document.getElementById(sectionId).style.display = 'block';
-    }
+        function updateProximity() {
+            let proximityDetected = false;
+            Object.keys(people).forEach(key => {
+                if (isNearby(people[key])) {
+                    interactionMessage.innerText = "Press Space to interact";
+                    proximityDetected = true;
 
-    function generateFloors() {
-        const floorsContainer = document.getElementById('floors');
-        floorsContainer.innerHTML = '';
-
-        const floors = [1, 2, 3, 4];
-        floors.forEach(floorNumber => {
-            const floorDiv = document.createElement('div');
-            floorDiv.classList.add('floor');
-            floorDiv.innerHTML = `<h3>Floor ${floorNumber}</h3>`;
-            const roomList = document.createElement('div');
-            roomList.classList.add('room-list');
-            rooms.filter(room => room.floor === floorNumber).forEach(room => {
-                const roomElement = document.createElement('div');
-                roomElement.classList.add('room');
-                if (room.occupied) {
-                    roomElement.classList.add('occupied');
-                } else if (room.dirty) {
-                    roomElement.classList.add('housekeeping');
+                    document.onkeydown = function(event) {
+                        if (event.code === 'Space') {
+                            interact(key);
+                        }
+                    };
                 }
-
-                roomElement.innerHTML = `
-                    <h3>Room ${room.id} (${room.type})</h3>
-                    <p>Price: £${room.type === 'Suite' ? room.priceSingle : room.priceDouble}</p>
-                    <p class="status">${room.occupied ? 'Occupied' : room.dirty ? 'Dirty' : 'Vacant'}</p>
-                    <button onclick="selectRoom(${room.id})" ${room.occupied ? 'disabled' : ''}>
-                        ${room.occupied ? 'Occupied' : room.dirty ? 'Clean Room' : 'Check In'}
-                    </button>
-                `;
-                roomList.appendChild(roomElement);
             });
-            floorDiv.appendChild(roomList);
-            floorsContainer.appendChild(floorDiv);
-        });
-    }
 
-    function selectRoom(roomId) {
-        selectedRoom = roomId;
-        const room = rooms.find(r => r.id === selectedRoom);
-        if (room.occupied) {
-            alert('Room is already occupied.');
-            return;
-        }
-        if (room.dirty) {
-            cleanRoom();
-        } else {
-            document.getElementById('checkin-form').style.display = 'block';
-        }
-    }
-
-    function cleanRoom() {
-        const room = rooms.find(r => r.id === selectedRoom);
-        room.dirty = false;
-        alert(`Room ${room.id} has been cleaned.`);
-        generateFloors();
-        activityLog.push(`Room ${room.id} was cleaned.`);
-    }
-
-    function checkInGuest() {
-        event.preventDefault();
-        const guestName = document.getElementById('guestName').value;
-        const guestsCount = document.getElementById('guestsCount').value;
-        const guestEmail = document.getElementById('guestEmail').value;
-        const guestID = document.getElementById('guestID').value;
-        const guestAddress = document.getElementById('guestAddress').value;
-        const guestPhone = document.getElementById('guestPhone').value;
-
-        if (guestName === '' || guestsCount === '' || guestEmail === '' || guestID === '' || guestAddress === '' || guestPhone === '') {
-            alert('Please fill in all fields.');
-            return;
+            if (!proximityDetected) {
+                interactionMessage.innerText = "";
+            }
         }
 
-        const room = rooms.find(r => r.id === selectedRoom);
-        room.occupied = true;
+        function interact(person) {
+            const messageElement = document.getElementById('interaction-message');
+            if (person === 'concierge') {
+                const response = prompt("Hello, my name is John. How can I assist you, sir? Should I call a cab for you? (yes/no)");
+                if (response.toLowerCase() === 'yes') {
+                    messageElement.innerText = "Ok. Calling a cab.";
+                } else {
+                    messageElement.innerText = "Then, go to bed. It's late.";
+                }
+            } else if (person === 'reception1' || person === 'reception2') {
+                dutyManager.classList.remove('hidden');
+                messageElement.innerText = "Madame, how can I help you?";
+            }
 
-        // Additional operations such as saving the check-in data, can be added here.
-
-        alert(`Guest ${guestName} has been checked into Room ${room.id}.`);
-
-        // Clear form
-        document.getElementById('guestForm').reset();
-        document.getElementById('checkin-form').style.display = 'none';
-
-        generateFloors(); // Update room status
-        activityLog.push(`Guest ${guestName} checked into Room ${room.id}.`);
-    }
-
-    function postCharge() {
-        event.preventDefault();
-        const chargeDescription = document.getElementById('chargeDescription').value;
-        const chargeAmount = document.getElementById('chargeAmount').value;
-        const cardNumber = document.getElementById('cardNumber').value;
-        const cardExpiry = document.getElementById('cardExpiry').value;
-        const cardCVV = document.getElementById('cardCVV').value;
-
-        if (chargeDescription === '' || chargeAmount === '' || cardNumber === '' || cardExpiry === '' || cardCVV === '') {
-            alert('Please fill in all fields.');
-            return;
+            interactionCount++;
+            if (interactionCount === 3) {
+                gameStatus.classList.remove('hidden');
+                gameStatus.innerText = "Game Over";
+                lobby.classList.add('hidden');
+            }
         }
 
-        const room = rooms.find(r => r.id === selectedRoom);
-        alert(`Charge of £${chargeAmount} has been posted to Room ${room.id} for ${chargeDescription}.`);
+        document.onkeydown = function(event) {
+            const step = 10;
+            let left = parseInt(window.getComputedStyle(character).left);
+            let top = parseInt(window.getComputedStyle(character).top);
 
-        document.getElementById('billingForm').reset();
-        document.getElementById('billing-form').style.display = 'none';
-        activityLog.push(`£${chargeAmount} charged to Room ${room.id} for ${chargeDescription}.`);
-    }
+            switch (event.code) {
+                case 'ArrowUp':
+                    if (top > 0) character.style.top = (top - step) + 'px';
+                    break;
+                case 'ArrowDown':
+                    if (top < (lobby.offsetHeight - character.offsetHeight)) character.style.top = (top + step) + 'px';
+                    break;
+                case 'ArrowLeft':
+                    if (left > 0) character.style.left = (left - step) + 'px';
+                    break;
+                case 'ArrowRight':
+                    if (left < (lobby.offsetWidth - character.offsetWidth)) character.style.left = (left + step) + 'px';
+                    break;
+                case 'Space':
+                    // Space key logic is handled in updateProximity
+                    break;
+            }
 
-    function showActivityLog() {
-        const logContainer = document.getElementById('activity-log-section');
-        logContainer.innerHTML = `<h2>Activity Log</h2>`;
-        activityLog.forEach(log => {
-            const logEntry = document.createElement('p');
-            logEntry.textContent = log;
-            logContainer.appendChild(logEntry);
-        });
-    }
-
-</script>
+            updateProximity();
+        };
+    </script>
 </body>
 </html>
