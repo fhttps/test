@@ -3,156 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Hotel Operational Platform</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f5f5f5; /* Light grey background */
-            color: #333; /* Dark text color */
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            background-color: #333;
         }
-        .template-header {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            font-size: 20px;
-            color: #666;
-            letter-spacing: 1px;
+
+        .login-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-        .login-container {
-            background-color: #ffffff; /* White background */
-            padding: 40px;
-            border-radius: 12px; /* Rounded corners */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+
+        .login-box input[type="text"],
+        .login-box input[type="password"] {
             width: 100%;
-            max-width: 350px;
-            box-sizing: border-box;
-            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-        .login-container h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
-        }
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
+
+        .login-box input[type="submit"] {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 14px;
-            background-color: #fafafa; /* Light grey input background */
-            color: #333;
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .login-container input[type="text"]:focus,
-        .login-container input[type="password"]:focus {
-            box-shadow: 0 0 8px rgba(0, 150, 255, 0.4); /* Soft glow on focus */
-            border-color: #0073e6;
-            outline: none;
-        }
-        .login-container button {
-            width: 100%;
-            padding: 12px;
-            background-color: #0073e6; /* Professional blue color */
+            padding: 10px;
+            background-color: #5cb85c;
             border: none;
-            border-radius: 6px;
-            color: #fff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 16px;
+        }
+
+        .login-box input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .room-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .room {
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            text-align: center;
+        }
+
+        .room h3 {
+            margin: 10px 0;
+        }
+
+        .room button {
+            padding: 10px;
+            background-color: #5cb85c;
+            border: none;
+            color: white;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 16px;
         }
-        .login-container button:hover {
-            background-color: #005bb5; /* Darker blue on hover */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Slight shadow on hover */
+
+        .room button:hover {
+            background-color: #4cae4c;
         }
-        .forgot-password {
-            color: #0073e6;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 13px;
+
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #5cb85c;
+            border: none;
+            color: white;
+            border-radius: 5px;
             cursor: pointer;
-            transition: color 0.3s ease;
+            font-size: 16px;
         }
-        .forgot-password:hover {
-            color: #005bb5;
+
+        .form-container input[type="submit"]:hover {
+            background-color: #4cae4c;
         }
-        .error-message,
-        .forgot-password-message {
-            color: #ff5555;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 13px;
+
+        .status {
+            font-size: 14px;
+            color: #888;
         }
-        footer {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 11px;
-            color: #777;
-        }
-        @media (max-width: 600px) {
-            .login-container {
-                padding: 30px;
-            }
-            .login-container h2 {
-                font-size: 20px;
-            }
-            .login-container input[type="text"],
-            .login-container input[type="password"] {
-                padding: 10px;
-                font-size: 13px;
-            }
-            .login-container button {
-                padding: 10px;
-                font-size: 14px;
-            }
+
+        .occupied {
+            background-color: #f44336;
         }
     </style>
 </head>
 <body>
-    <div class="template-header">Template Page for Businesses</div>
-    <div class="login-container">
-        <h2>Dashboard</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <p id="error-message" class="error-message"></p>
-        <p class="forgot-password" onclick="forgotPassword()">Forgot Password?</p>
-        <p id="forgot-password-message" class="forgot-password-message"></p>
-        <footer>
-            ©2024. All Rights Reserved.
-        </footer>
+
+<div class="login-container" id="login-container">
+    <div class="login-box">
+        <h2>Hotel Login</h2>
+        <input type="text" id="admin" placeholder="Admin Name" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="submit" value="Login" onclick="login()">
     </div>
-    <script>
-        function login() {
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            var errorMessage = document.getElementById('error-message');
-            var forgotPasswordMessage = document.getElementById('forgot-password-message');
+</div>
 
-            forgotPasswordMessage.textContent = ''; // Clear forgot password message
+<div class="container" id="hotel-container" style="display:none;">
+    <h2>Room Management</h2>
+    <div class="room-list" id="room-list">
+        <!-- Rooms will be generated here by JS -->
+    </div>
+</div>
 
-            if (username === 'template' && password === 'platform') {
-                // Store login state
-                localStorage.setItem('loggedIn', 'true');
-                window.location.href = 'third.html';
-            } else {
-                errorMessage.textContent = 'Incorrect username or password';
+<div class="form-container" id="checkin-form">
+    <h2>Check-in Guest</h2>
+    <input type="text" id="guestName" placeholder="Guest Name" required>
+    <input type="number" id="guestsCount" placeholder="Number of Guests" required>
+    <input type="submit" value="Check In" onclick="checkInGuest()">
+</div>
+
+<script>
+    // Rooms Data
+    const rooms = [
+        { id: 1, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 2, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 3, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 4, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 5, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 6, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 7, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 8, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 9, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 10, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
+        { id: 11, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 12, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 13, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 14, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 15, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 16, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 17, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 18, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 19, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 20, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 21, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 22, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 23, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 24, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 25, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
+        { id: 26, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
+        { id: 27, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
+        { id: 28, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
+        { id: 29, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
+        { id: 30, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
+    ];
+
+    let selectedRoom = null;
+
+    function login() {
+        const adminName = document.getElementById('admin').value;
+        const password = document.getElementById('password').value;
+
+        if (adminName === 'admin' && password === '101010') {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('hotel-container').style.display = 'block';
+            generateRooms();
+        } else {
+            alert('Invalid login details');
+        }
+    }
+
+    function generateRooms() {
+        const roomList = document.getElementById('room-list');
+        roomList.innerHTML = '';
+
+        rooms.forEach(room => {
+            const roomElement = document.createElement('div');
+            roomElement.classList.add('room');
+            if (room.occupied) {
+                roomElement.classList.add('occupied');
             }
+
+            roomElement.innerHTML = `
+                <h3>Room ${room.id} (${room.type})</h3>
+                <p>Price: £${room.type === 'Suite' ? room.priceSingle : room.priceDouble}</p>
+                               <p class="status">${room.occupied ? 'Occupied' : 'Vacant'}</p>
+                <button onclick="selectRoom(${room.id})" ${room.occupied ? 'disabled' : ''}>
+                    ${room.occupied ? 'Occupied' : 'Check In'}
+                </button>
+            `;
+            roomList.appendChild(roomElement);
+        });
+    }
+
+    function selectRoom(roomId) {
+        selectedRoom = roomId;
+        document.getElementById('checkin-form').style.display = 'block';
+    }
+
+    function checkInGuest() {
+        const guestName = document.getElementById('guestName').value;
+        const guestsCount = document.getElementById('guestsCount').value;
+
+        if (guestName === '' || guestsCount === '') {
+            alert('Please fill in all fields.');
+            return;
         }
 
-        function forgotPassword() {
-            var forgotPasswordMessage = document.getElementById('forgot-password-message');
-            forgotPasswordMessage.textContent = 'This is a template. Log in: template  password : platform';
-        }
-    </script>
+        const room = rooms.find(r => r.id === selectedRoom);
+        room.occupied = true;
+
+        // Add additional operations here, such as saving the check-in data.
+
+        alert(`Guest ${guestName} has been checked into Room ${room.id}.`);
+
+        // Clear form
+        document.getElementById('guestName').value = '';
+        document.getElementById('guestsCount').value = '';
+        document.getElementById('checkin-form').style.display = 'none';
+
+        generateRooms(); // Update room status
+    }
+</script>
 </body>
 </html>
