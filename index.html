@@ -10,6 +10,39 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+        }
+
+        .nav-menu a {
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-menu a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            flex: 1;
+            padding: 20px;
+            display: none;
         }
 
         .login-container {
@@ -51,8 +84,14 @@
             background-color: #4cae4c;
         }
 
-        .container {
-            padding: 20px;
+        .floor {
+            margin-bottom: 30px;
+        }
+
+        .floor h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
         }
 
         .room-list {
@@ -94,13 +133,14 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            margin: 0 auto;
+            max-width: 600px;
+            margin: 20px auto;
             display: none;
         }
 
         .form-container input[type="text"],
-        .form-container input[type="number"] {
+        .form-container input[type="number"],
+        .form-container input[type="email"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -131,9 +171,33 @@
         .occupied {
             background-color: #f44336;
         }
+
+        .housekeeping {
+            background-color: #ffeb3b;
+            color: black;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+        }
     </style>
 </head>
 <body>
+
+<header>
+    <h1>Hotel Management System</h1>
+</header>
+
+<div class="nav-menu" id="nav-menu" style="display:none;">
+    <a href="#" onclick="showSection('rooms-section')">Rooms</a>
+    <a href="#" onclick="showSection('reservations-section')">Reservations</a>
+    <a href="#" onclick="showSection('housekeeping-section')">Housekeeping</a>
+    <a href="#" onclick="showSection('activity-log-section')">Activity Log</a>
+</div>
 
 <div class="login-container" id="login-container">
     <div class="login-box">
@@ -144,56 +208,90 @@
     </div>
 </div>
 
-<div class="container" id="hotel-container" style="display:none;">
+<div class="container" id="rooms-section">
     <h2>Room Management</h2>
-    <div class="room-list" id="room-list">
-        <!-- Rooms will be generated here by JS -->
+    <div id="floors">
+        <!-- Floors and Rooms will be generated here by JS -->
     </div>
+</div>
+
+<div class="container" id="reservations-section">
+    <h2>Reservations</h2>
+    <!-- Reservation content will go here -->
+</div>
+
+<div class="container" id="housekeeping-section">
+    <h2>Housekeeping Management</h2>
+    <!-- Housekeeping content will go here -->
+</div>
+
+<div class="container" id="activity-log-section">
+    <h2>Activity Log</h2>
+    <!-- Activity log content will go here -->
 </div>
 
 <div class="form-container" id="checkin-form">
     <h2>Check-in Guest</h2>
-    <input type="text" id="guestName" placeholder="Guest Name" required>
-    <input type="number" id="guestsCount" placeholder="Number of Guests" required>
-    <input type="submit" value="Check In" onclick="checkInGuest()">
+    <form id="guestForm">
+        <input type="text" id="guestName" placeholder="Guest Name" required>
+        <input type="number" id="guestsCount" placeholder="Number of Guests" required>
+        <input type="email" id="guestEmail" placeholder="Guest Email" required>
+        <input type="text" id="guestID" placeholder="Guest ID/Passport" required>
+        <input type="text" id="guestAddress" placeholder="Guest Address" required>
+        <input type="text" id="guestPhone" placeholder="Guest Phone" required>
+        <input type="submit" value="Check In" onclick="checkInGuest()">
+    </form>
 </div>
+
+<div class="form-container" id="billing-form">
+    <h2>Billing</h2>
+    <form id="billingForm">
+        <p>Room: <span id="billing-room"></span></p>
+        <input type="text" id="chargeDescription" placeholder="Charge Description" required>
+        <input type="number" id="chargeAmount" placeholder="Amount (£)" required>
+        <input type="text" id="cardNumber" placeholder="Credit Card Number" required>
+        <input type="text" id="cardExpiry" placeholder="Expiry Date (MM/YY)" required>
+        <input type="text" id="cardCVV" placeholder="CVV" required>
+        <input type="submit" value="Post Charge" onclick="postCharge()">
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2024 Hotel Management System. All rights reserved.</p>
+</footer>
 
 <script>
     // Rooms Data
     const rooms = [
-        { id: 1, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 2, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 3, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 4, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 5, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 6, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 7, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 8, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 9, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 10, type: 'Standard', priceSingle: 100, priceDouble: 130, occupied: false },
-        { id: 11, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 12, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 13, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 14, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 15, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 16, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 17, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 18, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 19, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 20, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 21, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 22, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 23, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 24, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 25, type: 'Superior', priceSingle: 130, priceDouble: 160, occupied: false },
-        { id: 26, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
-        { id: 27, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
-        { id: 28, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
-        { id: 29, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
-        { id: 30, type: 'Suite', priceSingle: 200, priceDouble: 200, occupied: false },
+        { id: 1, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 2, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 3, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 4, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 5, type: 'Standard', floor: 1, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 6, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 7, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 8, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 9, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 10, type: 'Standard', floor: 2, priceSingle: 100, priceDouble: 130, occupied: false, dirty: false },
+        { id: 11, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 12, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 13, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 14, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 15, type: 'Superior', floor: 3, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 16, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 17, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 18, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 19, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 20, type: 'Superior', floor: 4, priceSingle: 130, priceDouble: 160, occupied: false, dirty: false },
+        { id: 21, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
+        { id: 22, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
+        { id: 23, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
+        { id: 24, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
+        { id: 25, type: 'Suite', floor: 4, priceSingle: 200, priceDouble: 200, occupied: false, dirty: false },
     ];
 
     let selectedRoom = null;
+    let activityLog = [];
 
     function login() {
         const adminName = document.getElementById('admin').value;
@@ -201,46 +299,87 @@
 
         if (adminName === 'admin' && password === '101010') {
             document.getElementById('login-container').style.display = 'none';
-            document.getElementById('hotel-container').style.display = 'block';
-            generateRooms();
+            document.getElementById('nav-menu').style.display = 'flex';
+            showSection('rooms-section');
+            generateFloors();
         } else {
             alert('Invalid login details');
         }
     }
 
-    function generateRooms() {
-        const roomList = document.getElementById('room-list');
-        roomList.innerHTML = '';
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.container');
+        sections.forEach(section => section.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+    }
 
-        rooms.forEach(room => {
-            const roomElement = document.createElement('div');
-            roomElement.classList.add('room');
-            if (room.occupied) {
-                roomElement.classList.add('occupied');
-            }
+    function generateFloors() {
+        const floorsContainer = document.getElementById('floors');
+        floorsContainer.innerHTML = '';
 
-            roomElement.innerHTML = `
-                <h3>Room ${room.id} (${room.type})</h3>
-                <p>Price: £${room.type === 'Suite' ? room.priceSingle : room.priceDouble}</p>
-                               <p class="status">${room.occupied ? 'Occupied' : 'Vacant'}</p>
-                <button onclick="selectRoom(${room.id})" ${room.occupied ? 'disabled' : ''}>
-                    ${room.occupied ? 'Occupied' : 'Check In'}
-                </button>
-            `;
-            roomList.appendChild(roomElement);
+        const floors = [1, 2, 3, 4];
+        floors.forEach(floorNumber => {
+            const floorDiv = document.createElement('div');
+            floorDiv.classList.add('floor');
+            floorDiv.innerHTML = `<h3>Floor ${floorNumber}</h3>`;
+            const roomList = document.createElement('div');
+            roomList.classList.add('room-list');
+            rooms.filter(room => room.floor === floorNumber).forEach(room => {
+                const roomElement = document.createElement('div');
+                roomElement.classList.add('room');
+                if (room.occupied) {
+                    roomElement.classList.add('occupied');
+                } else if (room.dirty) {
+                    roomElement.classList.add('housekeeping');
+                }
+
+                roomElement.innerHTML = `
+                    <h3>Room ${room.id} (${room.type})</h3>
+                    <p>Price: £${room.type === 'Suite' ? room.priceSingle : room.priceDouble}</p>
+                    <p class="status">${room.occupied ? 'Occupied' : room.dirty ? 'Dirty' : 'Vacant'}</p>
+                    <button onclick="selectRoom(${room.id})" ${room.occupied ? 'disabled' : ''}>
+                        ${room.occupied ? 'Occupied' : room.dirty ? 'Clean Room' : 'Check In'}
+                    </button>
+                `;
+                roomList.appendChild(roomElement);
+            });
+            floorDiv.appendChild(roomList);
+            floorsContainer.appendChild(floorDiv);
         });
     }
 
     function selectRoom(roomId) {
         selectedRoom = roomId;
-        document.getElementById('checkin-form').style.display = 'block';
+        const room = rooms.find(r => r.id === selectedRoom);
+        if (room.occupied) {
+            alert('Room is already occupied.');
+            return;
+        }
+        if (room.dirty) {
+            cleanRoom();
+        } else {
+            document.getElementById('checkin-form').style.display = 'block';
+        }
+    }
+
+    function cleanRoom() {
+        const room = rooms.find(r => r.id === selectedRoom);
+        room.dirty = false;
+        alert(`Room ${room.id} has been cleaned.`);
+        generateFloors();
+        activityLog.push(`Room ${room.id} was cleaned.`);
     }
 
     function checkInGuest() {
+        event.preventDefault();
         const guestName = document.getElementById('guestName').value;
         const guestsCount = document.getElementById('guestsCount').value;
+        const guestEmail = document.getElementById('guestEmail').value;
+        const guestID = document.getElementById('guestID').value;
+        const guestAddress = document.getElementById('guestAddress').value;
+        const guestPhone = document.getElementById('guestPhone').value;
 
-        if (guestName === '' || guestsCount === '') {
+        if (guestName === '' || guestsCount === '' || guestEmail === '' || guestID === '' || guestAddress === '' || guestPhone === '') {
             alert('Please fill in all fields.');
             return;
         }
@@ -248,17 +387,49 @@
         const room = rooms.find(r => r.id === selectedRoom);
         room.occupied = true;
 
-        // Add additional operations here, such as saving the check-in data.
+        // Additional operations such as saving the check-in data, can be added here.
 
         alert(`Guest ${guestName} has been checked into Room ${room.id}.`);
 
         // Clear form
-        document.getElementById('guestName').value = '';
-        document.getElementById('guestsCount').value = '';
+        document.getElementById('guestForm').reset();
         document.getElementById('checkin-form').style.display = 'none';
 
-        generateRooms(); // Update room status
+        generateFloors(); // Update room status
+        activityLog.push(`Guest ${guestName} checked into Room ${room.id}.`);
     }
+
+    function postCharge() {
+        event.preventDefault();
+        const chargeDescription = document.getElementById('chargeDescription').value;
+        const chargeAmount = document.getElementById('chargeAmount').value;
+        const cardNumber = document.getElementById('cardNumber').value;
+        const cardExpiry = document.getElementById('cardExpiry').value;
+        const cardCVV = document.getElementById('cardCVV').value;
+
+        if (chargeDescription === '' || chargeAmount === '' || cardNumber === '' || cardExpiry === '' || cardCVV === '') {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        const room = rooms.find(r => r.id === selectedRoom);
+        alert(`Charge of £${chargeAmount} has been posted to Room ${room.id} for ${chargeDescription}.`);
+
+        document.getElementById('billingForm').reset();
+        document.getElementById('billing-form').style.display = 'none';
+        activityLog.push(`£${chargeAmount} charged to Room ${room.id} for ${chargeDescription}.`);
+    }
+
+    function showActivityLog() {
+        const logContainer = document.getElementById('activity-log-section');
+        logContainer.innerHTML = `<h2>Activity Log</h2>`;
+        activityLog.forEach(log => {
+            const logEntry = document.createElement('p');
+            logEntry.textContent = log;
+            logContainer.appendChild(logEntry);
+        });
+    }
+
 </script>
 </body>
 </html>
