@@ -28,6 +28,8 @@
             border: 2px solid #000;
             margin-bottom: 20px;
             overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
         }
 
         .person {
@@ -75,10 +77,37 @@
             position: absolute;
             top: 225px;
             left: 375px;
+            border-radius: 50%;
         }
 
-        .hidden {
+        .chatbox {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #000;
+            border-radius: 10px;
+            padding: 10px;
+            width: 200px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             display: none;
+        }
+
+        #chat-concierge {
+            top: 80px;
+            right: 220px;
+        }
+
+        #chat-reception1 {
+            bottom: 100px;
+            left: 210px;
+        }
+
+        #chat-reception2 {
+            bottom: 100px;
+            left: 380px;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
         }
 
         #interaction-message {
@@ -108,6 +137,21 @@
                 <div class="face"></div>
             </div>
             <div id="character"></div>
+            <div id="chat-concierge" class="chatbox">
+                <div class="chat-message">Hello, my name is John. How can I assist you, sir? Should I call a cab for you?</div>
+                <input type="text" id="input-concierge" placeholder="Type your response here">
+                <button onclick="sendResponse('concierge')">Send</button>
+            </div>
+            <div id="chat-reception1" class="chatbox">
+                <div class="chat-message">Hello sir, how can I assist you?</div>
+                <input type="text" id="input-reception1" placeholder="Type your response here">
+                <button onclick="sendResponse('reception1')">Send</button>
+            </div>
+            <div id="chat-reception2" class="chatbox">
+                <div class="chat-message">Hello sir, how can I assist you?</div>
+                <input type="text" id="input-reception2" placeholder="Type your response here">
+                <button onclick="sendResponse('reception2')">Send</button>
+            </div>
             <div id="duty-manager" class="hidden">
                 <div class="name">Aditi (Duty Manager)</div>
                 <div class="face"></div>
@@ -131,6 +175,29 @@
             reception2: document.getElementById('reception2')
         };
 
+        const chats = {
+            concierge: document.getElementById('chat-concierge'),
+            reception1: document.getElementById('chat-reception1'),
+            reception2: document.getElementById('chat-reception2')
+        };
+
+        const responses = {
+            reception1: [
+                "How can I help you today?",
+                "Do you need assistance with something?",
+                "Is there anything I can assist you with?",
+                "Can I provide you with some information?",
+                "Do you need any help with your room?"
+            ],
+            reception2: [
+                "What can I do for you?",
+                "Are you having any issues?",
+                "Can I help you with something?",
+                "Do you have any requests?",
+                "Is there anything specific you need help with?"
+            ]
+        };
+
         function isNearby(elem, distance = 50) {
             const characterRect = character.getBoundingClientRect();
             const elemRect = elem.getBoundingClientRect();
@@ -147,31 +214,50 @@
                     interactionMessage.innerText = "Press Space to interact";
                     proximityDetected = true;
 
-                    document.onkeydown = function(event) {
+                    document.addEventListener('keydown', function(event) {
                         if (event.code === 'Space') {
-                            interact(key);
+                            showChat(key);
                         }
-                    };
+                    });
                 }
             });
 
             if (!proximityDetected) {
                 interactionMessage.innerText = "";
+                Object.values(chats).forEach(chat => chat.style.display = 'none');
             }
         }
 
-        function interact(person) {
-            const messageElement = document.getElementById('interaction-message');
+        function showChat(person) {
+            Object.values(chats).forEach(chat => chat.style.display = 'none');
+            chats[person].style.display = 'block';
+            if (person === 'reception1' || person === 'reception2') {
+                const chatMessage = chats[person].querySelector('.chat-message');
+                chatMessage.innerText = responses[person][Math.floor(Math.random() * responses[person].length)];
+            }
+        }
+
+        function sendResponse(person) {
+            const input = document.getElementById(`input-${person}`);
+            const response = input.value.toLowerCase();
+            const chatMessage = chats[person].querySelector('.chat-message');
+
             if (person === 'concierge') {
-                const response = prompt("Hello, my name is John. How can I assist you, sir? Should I call a cab for you? (yes/no)");
-                if (response.toLowerCase() === 'yes') {
-                    messageElement.innerText = "Ok. Calling a cab.";
+                if (response.includes('yes')) {
+                    chatMessage.innerText = "Ok. Calling a cab.";
                 } else {
-                    messageElement.innerText = "Then, go to bed. It's late.";
+                    chatMessage.innerText = "Then, go to bed. It's late.";
                 }
             } else if (person === 'reception1' || person === 'reception2') {
-                dutyManager.classList.remove('hidden');
-                messageElement.innerText = "Madame, how can I help you?";
+                if (response.includes('complaint')) {
+                    chatMessage.innerText = "I will call my manager.";
+                    setTimeout(() => {
+                        dutyManager.classList.remove('hidden');
+                        dutyManager.querySelector('.name').innerText = "Hello, I am the manager. Go back to your room and stop complaining.";
+                    }, 1000);
+                } else {
+                    chatMessage.innerText = responses[person][Math.floor(Math.random() * responses[person].length)];
+                }
             }
 
             interactionCount++;
