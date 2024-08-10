@@ -3,292 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Lobby Game</title>
+    <title>Hotel Operational System</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
-        #game-container {
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+        .header {
             text-align: center;
-            position: relative;
-        }
-
-        #lobby {
-            position: relative;
-            width: 800px;
-            height: 500px;
-            background-color: #fff;
-            border: 2px solid #000;
             margin-bottom: 20px;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
         }
-
-        .person {
-            width: 150px;
-            height: 200px;
-            border: 2px solid #000;
-            border-radius: 10px;
-            padding: 10px;
-            background-color: #fff;
-            position: absolute;
+        .button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
             cursor: pointer;
+            font-size: 16px;
         }
-
-        #concierge {
-            top: 100px;
-            right: 50px;
+        .button:hover {
+            background-color: #0056b3;
         }
-
-        #reception1 {
-            bottom: 100px;
-            left: 50px;
-        }
-
-        #reception2 {
-            bottom: 100px;
-            left: 220px;
-        }
-
-        .name {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .face {
-            width: 100%;
-            height: 100px;
-            background-color: #ddd;
-            border-radius: 10px;
-        }
-
-        #character {
-            width: 50px;
-            height: 50px;
-            background-color: red;
-            position: absolute;
-            top: 225px;
-            left: 375px;
-            border-radius: 50%;
-        }
-
-        .chatbox {
-            position: absolute;
-            background-color: #fff;
-            border: 1px solid #000;
-            border-radius: 10px;
-            padding: 10px;
-            width: 200px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        .hidden {
             display: none;
         }
-
-        #chat-concierge {
-            top: 80px;
-            right: 220px;
+        .section {
+            margin: 20px 0;
         }
-
-        #chat-reception1 {
-            bottom: 100px;
-            left: 210px;
+        .form-group {
+            margin-bottom: 15px;
         }
-
-        #chat-reception2 {
-            bottom: 100px;
-            left: 380px;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
         }
-
-        .chat-message {
-            margin-bottom: 10px;
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
         }
-
-        #interaction-message {
-            font-size: 18px;
-            margin-bottom: 20px;
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
         }
-
-        #game-status {
-            font-size: 24px;
-            font-weight: bold;
+        .room-status {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .room {
+            width: 20%;
+            padding: 15px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .room.occupied {
+            background-color: #f8d7da;
+        }
+        .room.dirty {
+            background-color: #fff3cd;
+        }
+        .room.vacant {
+            background-color: #d4edda;
         }
     </style>
 </head>
 <body>
-    <div id="game-container">
-        <div id="lobby">
-            <div id="concierge" class="person">
-                <div class="name">John (Concierge)</div>
-                <div class="face"></div>
-            </div>
-            <div id="reception1" class="person">
-                <div class="name">Diego (Receptionist)</div>
-                <div class="face"></div>
-            </div>
-            <div id="reception2" class="person">
-                <div class="name">Saroj (Receptionist)</div>
-                <div class="face"></div>
-            </div>
-            <div id="character"></div>
-            <div id="chat-concierge" class="chatbox">
-                <div class="chat-message">Hello, my name is John. How can I assist you, sir? Should I call a cab for you?</div>
-                <input type="text" id="input-concierge" placeholder="Type your response here">
-                <button onclick="sendResponse('concierge')">Send</button>
-            </div>
-            <div id="chat-reception1" class="chatbox">
-                <div class="chat-message">Hello sir, how can I assist you?</div>
-                <input type="text" id="input-reception1" placeholder="Type your response here">
-                <button onclick="sendResponse('reception1')">Send</button>
-            </div>
-            <div id="chat-reception2" class="chatbox">
-                <div class="chat-message">Hello sir, how can I assist you?</div>
-                <input type="text" id="input-reception2" placeholder="Type your response here">
-                <button onclick="sendResponse('reception2')">Send</button>
-            </div>
-            <div id="duty-manager" class="hidden">
-                <div class="name">Aditi (Duty Manager)</div>
-                <div class="face"></div>
+    <div class="header">
+        <h1>Hotel Operational System</h1>
+        <button class="button" onclick="showSection('housekeeping')">Housekeeping</button>
+        <button class="button" onclick="showSection('frontdesk')">Front Desk</button>
+        <button class="button" onclick="showSection('reservation')">Reservation</button>
+        <button class="button" onclick="showSection('maintenance')">Maintenance</button>
+    </div>
+    <div class="container">
+        <!-- Housekeeping Section -->
+        <div id="housekeeping" class="section hidden">
+            <h2>Housekeeping</h2>
+            <div class="room-status">
+                <!-- Room status will be dynamically inserted here -->
             </div>
         </div>
-        <div id="interaction-message"></div>
-        <div id="game-status" class="hidden"></div>
+
+        <!-- Front Desk Section -->
+        <div id="frontdesk" class="section hidden">
+            <h2>Front Desk</h2>
+            <div id="checkin-form">
+                <h3>Check-in</h3>
+                <div class="form-group">
+                    <label for="checkin-booking-number">Booking Number</label>
+                    <input type="text" id="checkin-booking-number" placeholder="Enter Booking Number">
+                </div>
+                <button class="button" onclick="checkIn()">Check In</button>
+            </div>
+            <div id="checkout-form">
+                <h3>Check-out</h3>
+                <div class="form-group">
+                    <label for="checkout-booking-number">Booking Number</label>
+                    <input type="text" id="checkout-booking-number" placeholder="Enter Booking Number">
+                </div>
+                <button class="button" onclick="checkOut()">Check Out</button>
+            </div>
+            <div id="billing-form">
+                <h3>Billing</h3>
+                <div class="form-group">
+                    <label for="billing-booking-number">Booking Number</label>
+                    <input type="text" id="billing-booking-number" placeholder="Enter Booking Number">
+                </div>
+                <div class="form-group">
+                    <label for="billing-credit-card">Credit Card</label>
+                    <select id="billing-credit-card">
+                        <option value="visa">Visa</option>
+                        <option value="amex">Amex</option>
+                        <option value="master">MasterCard</option>
+                    </select>
+                </div>
+                <button class="button" onclick="chargeCreditCard()">Charge Card</button>
+            </div>
+        </div>
+
+        <!-- Reservation Section -->
+        <div id="reservation" class="section hidden">
+            <h2>Reservation</h2>
+            <div id="reservation-form">
+                <h3>Make a Reservation</h3>
+                <div class="form-group">
+                    <label for="reservation-name">Guest Name</label>
+                    <input type="text" id="reservation-name" placeholder="Enter Guest Name">
+                </div>
+                <div class="form-group">
+                    <label for="reservation-room">Room Number</label>
+                    <select id="reservation-room">
+                        <!-- Room numbers will be dynamically inserted here -->
+                    </select>
+                </div>
+                <button class="button" onclick="makeReservation()">Reserve</button>
+            </div>
+            <div id="reservation-list">
+                <h3>Current Reservations</h3>
+                <!-- Reservations will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Maintenance Section -->
+        <div id="maintenance" class="section hidden">
+            <h2>Maintenance</h2>
+            <div class="form-group">
+                <label for="maintenance-room">Room Number</label>
+                <select id="maintenance-room">
+                    <!-- Room numbers will be dynamically inserted here -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="maintenance-issue">Issue Description</label>
+                <input type="text" id="maintenance-issue" placeholder="Describe the issue">
+            </div>
+            <button class="button" onclick="reportIssue()">Report Issue</button>
+        </div>
     </div>
-
     <script>
-        let interactionCount = 0;
-        const character = document.getElementById('character');
-        const interactionMessage = document.getElementById('interaction-message');
-        const dutyManager = document.getElementById('duty-manager');
-        const gameStatus = document.getElementById('game-status');
-        const lobby = document.getElementById('lobby');
+        const totalRooms = 10;
+        const housekeepingStatus = JSON.parse(localStorage.getItem('housekeepingStatus')) || Array(totalRooms).fill('vacant');
+        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+        const issues = JSON.parse(localStorage.getItem('issues')) || [];
 
-        const people = {
-            concierge: document.getElementById('concierge'),
-            reception1: document.getElementById('reception1'),
-            reception2: document.getElementById('reception2')
-        };
-
-        const chats = {
-            concierge: document.getElementById('chat-concierge'),
-            reception1: document.getElementById('chat-reception1'),
-            reception2: document.getElementById('chat-reception2')
-        };
-
-        const responses = {
-            reception1: [
-                "How can I help you today?",
-                "Do you need assistance with something?",
-                "Is there anything I can assist you with?",
-                "Can I provide you with some information?",
-                "Do you need any help with your room?"
-            ],
-            reception2: [
-                "What can I do for you?",
-                "Are you having any issues?",
-                "Can I help you with something?",
-                "Do you have any requests?",
-                "Is there anything specific you need help with?"
-            ]
-        };
-
-        function isNearby(elem, distance = 50) {
-            const characterRect = character.getBoundingClientRect();
-            const elemRect = elem.getBoundingClientRect();
-            return !(elemRect.right < characterRect.left - distance ||
-                     elemRect.left > characterRect.right + distance ||
-                     elemRect.bottom < characterRect.top - distance ||
-                     elemRect.top > characterRect.bottom + distance);
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            if (sectionId === 'housekeeping') updateHousekeeping();
+            if (sectionId === 'reservation') updateReservation();
         }
 
-        function updateProximity() {
-            let proximityDetected = false;
-            Object.keys(people).forEach(key => {
-                if (isNearby(people[key])) {
-                    interactionMessage.innerText = "Press Space to interact";
-                    proximityDetected = true;
+        function updateHousekeeping() {
+            const roomStatusDiv = document.querySelector('#housekeeping .room-status');
+            roomStatusDiv.innerHTML = '';
+            for (let i = 1; i <= totalRooms; i++) {
+                const status = housekeepingStatus[i-1];
+                const roomDiv = document.createElement('div');
+                roomDiv.className = `room ${status}`;
+                roomDiv.innerHTML = `<strong>Room ${i}</strong><br>Status: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
+                roomStatusDiv.appendChild(roomDiv);
+            }
+        }
 
-                    document.addEventListener('keydown', function(event) {
-                        if (event.code === 'Space') {
-                            showChat(key);
-                        }
-                    });
-                }
+        function updateReservation() {
+            const roomSelect = document.getElementById('reservation-room');
+            roomSelect.innerHTML = '';
+            for (let i = 1; i <= totalRooms; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `Room ${i}`;
+                roomSelect.appendChild(option);
+            }
+
+            const reservationListDiv = document.getElementById('reservation-list');
+            reservationListDiv.innerHTML = '<h3>Current Reservations</h3>';
+            reservations.forEach(res => {
+                const resDiv = document.createElement('div');
+                resDiv.textContent = `Booking Number: ${res.bookingNumber}, Guest: ${res.guestName}, Room: ${res.roomNumber}`;
+                reservationListDiv.appendChild(resDiv);
             });
+        }
 
-            if (!proximityDetected) {
-                interactionMessage.innerText = "";
-                Object.values(chats).forEach(chat => chat.style.display = 'none');
+        function makeReservation() {
+            const name = document.getElementById('reservation-name').value;
+            const room = document.getElementById('reservation-room').value;
+            const bookingNumber = Math.floor(Math.random() * 100000);
+
+            reservations.push({ bookingNumber, guestName: name, roomNumber: room });
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+
+            updateReservation();
+        }
+
+        function checkIn() {
+            const bookingNumber = document.getElementById('checkin-booking-number').value;
+            const res = reservations.find(r => r.bookingNumber == bookingNumber);
+            if (res) {
+                housekeepingStatus[res.roomNumber - 1] = 'occupied';
+                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
+                localStorage.setItem('reservations', JSON.stringify(reservations.filter(r => r.bookingNumber != bookingNumber)));
+                updateHousekeeping();
+                updateReservation();
+            } else {
+                alert('Reservation not found.');
             }
         }
 
-        function showChat(person) {
-            Object.values(chats).forEach(chat => chat.style.display = 'none');
-            chats[person].style.display = 'block';
-            if (person === 'reception1' || person === 'reception2') {
-                const chatMessage = chats[person].querySelector('.chat-message');
-                chatMessage.innerText = responses[person][Math.floor(Math.random() * responses[person].length)];
+        function checkOut() {
+            const bookingNumber = document.getElementById('checkout-booking-number').value;
+            const res = reservations.find(r => r.bookingNumber == bookingNumber);
+            if (res) {
+                housekeepingStatus[res.roomNumber - 1] = 'vacant';
+                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
+                localStorage.setItem('reservations', JSON.stringify(reservations.filter(r => r.bookingNumber != bookingNumber)));
+                updateHousekeeping();
+                updateReservation();
+            } else {
+                alert('Reservation not found.');
             }
         }
 
-        function sendResponse(person) {
-            const input = document.getElementById(`input-${person}`);
-            const response = input.value.toLowerCase();
-            const chatMessage = chats[person].querySelector('.chat-message');
+        function reportIssue() {
+            const roomNumber = document.getElementById('maintenance-room').value;
+            const issue = document.getElementById('maintenance-issue').value;
 
-            if (person === 'concierge') {
-                if (response.includes('yes')) {
-                    chatMessage.innerText = "Ok. Calling a cab.";
-                } else {
-                    chatMessage.innerText = "Then, go to bed. It's late.";
-                }
-            } else if (person === 'reception1' || person === 'reception2') {
-                if (response.includes('complaint')) {
-                    chatMessage.innerText = "I will call my manager.";
-                    setTimeout(() => {
-                        dutyManager.classList.remove('hidden');
-                        dutyManager.querySelector('.name').innerText = "Hello, I am the manager. Go back to your room and stop complaining.";
-                    }, 1000);
-                } else {
-                    chatMessage.innerText = responses[person][Math.floor(Math.random() * responses[person].length)];
-                }
-            }
+            issues.push({ roomNumber, issue });
+            localStorage.setItem('issues', JSON.stringify(issues));
 
-            interactionCount++;
-            if (interactionCount === 3) {
-                gameStatus.classList.remove('hidden');
-                gameStatus.innerText = "Game Over";
-                lobby.classList.add('hidden');
-            }
+            alert('Issue reported.');
         }
 
-        document.addEventListener('keydown', function(event) {
-            const step = 10;
-            let left = parseInt(window.getComputedStyle(character).left, 10);
-            let top = parseInt(window.getComputedStyle(character).top, 10);
+        function chargeCreditCard() {
+            const bookingNumber = document.getElementById('billing-booking-number').value;
+            const cardType = document.getElementById('billing-credit-card').value;
 
-            switch (event.code) {
-                case 'ArrowUp':
-                    if (top > 0) character.style.top = (top - step) + 'px';
-                    break;
-                case 'ArrowDown':
-                    if (top < (lobby.offsetHeight - character.offsetHeight)) character.style.top = (top + step) + 'px';
-                    break;
-                case 'ArrowLeft':
-                    if (left > 0) character.style.left = (left - step) + 'px';
-                    break;
-                case 'ArrowRight':
-                    if (left < (lobby.offsetWidth - character.offsetWidth)) character.style.left = (left + step) + 'px';
-                    break;
-            }
+            // Simple simulation of charging the card
+            alert(`Charging ${cardType} card for booking number ${bookingNumber}.`);
+        }
 
-            updateProximity();
+        // Initialize reservation options
+        document.addEventListener('DOMContentLoaded', () => {
+            updateHousekeeping();
+            updateReservation();
         });
     </script>
 </body>
