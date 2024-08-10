@@ -73,6 +73,9 @@
         .room.vacant {
             background-color: #d4edda;
         }
+        .room.out-of-order {
+            background-color: #ffffe0; /* Yellow */
+        }
         .reservation-list div,
         .issue-list div {
             margin-bottom: 10px;
@@ -81,7 +84,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Opera's poor cousin</h1>
+        <h1>Opera's Poor Cousin</h1>
         <button class="button" onclick="showSection('housekeeping')">Housekeeping</button>
         <button class="button" onclick="showSection('frontdesk')">Front Desk</button>
         <button class="button" onclick="showSection('reservation')">Reservation</button>
@@ -93,6 +96,17 @@
             <h2>Housekeeping</h2>
             <div class="room-status" id="housekeeping-room-status">
                 <!-- Room status will be dynamically inserted here -->
+            </div>
+            <div id="out-of-order-form">
+                <h3>Mark Room Out of Order</h3>
+                <div class="form-group">
+                    <label for="out-of-order-room">Room Number</label>
+                    <select id="out-of-order-room">
+                        <!-- Room numbers will be dynamically inserted here -->
+                    </select>
+                </div>
+                <button class="button" onclick="markOutOfOrder()">Mark Out of Order</button>
+                <button class="button" onclick="removeOutOfOrder()">Remove Out of Order</button>
             </div>
         </div>
 
@@ -122,19 +136,47 @@
                     <input type="text" id="billing-booking-number" placeholder="Enter Booking Number">
                 </div>
                 <div class="form-group">
-                    <label for="billing-credit-card">Credit Card</label>
-                    <select id="billing-credit-card">
-                        <option value="visa">Visa</option>
-                        <option value="amex">Amex</option>
-                        <option value="master">MasterCard</option>
+                    <label for="billing-charge-code">Charge Code</label>
+                    <select id="billing-charge-code">
+                        <option value="0001">Accommodation</option>
+                        <option value="0002">Car Park</option>
+                        <!-- Additional charge codes can be added here -->
                     </select>
                 </div>
-                <button class="button" onclick="chargeCreditCard()">Charge Card</button>
+                <div class="form-group">
+                    <label for="billing-charge-date">Date</label>
+                    <input type="date" id="billing-charge-date">
+                </div>
+                <div class="form-group">
+                    <label for="billing-charge-amount">Amount</label>
+                    <input type="number" id="billing-charge-amount" step="0.01" placeholder="Enter Amount">
+                </div>
+                <button class="button" onclick="postCharge()">Post Charge</button>
                 <div id="billing-info" class="hidden">
                     <h3>Charges</h3>
                     <div id="billing-summary">
                         <!-- Billing summary will be dynamically inserted here -->
                     </div>
+                </div>
+                <div id="payment-form">
+                    <h3>Process Payment</h3>
+                    <div class="form-group">
+                        <label for="payment-credit-card-number">Credit Card Number</label>
+                        <input type="text" id="payment-credit-card-number" placeholder="Enter Credit Card Number">
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-expiry-date">Expiry Date</label>
+                        <input type="month" id="payment-expiry-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-credit-card-type">Card Type</label>
+                        <select id="payment-credit-card-type">
+                            <option value="visa">Visa</option>
+                            <option value="amex">Amex</option>
+                            <option value="master">MasterCard</option>
+                        </select>
+                    </div>
+                    <button class="button" onclick="processPayment()">Process Payment</button>
                 </div>
             </div>
             <div id="current-reservations">
@@ -191,6 +233,7 @@
         const housekeepingStatus = JSON.parse(localStorage.getItem('housekeepingStatus')) || Array(totalRooms).fill('vacant');
         const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
         const issues = JSON.parse(localStorage.getItem('issues')) || [];
+        const charges = JSON.parse(localStorage.getItem('charges')) || {};
         
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
@@ -211,6 +254,28 @@
                 roomDiv.innerHTML = `<strong>Room ${i}</strong><br>Status: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
                 roomStatusDiv.appendChild(roomDiv);
             }
+            const outOfOrderSelect = document.getElementById('out-of-order-room');
+            outOfOrderSelect.innerHTML = '';
+            for (let i = 1; i <= totalRooms; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `Room ${i}`;
+                outOfOrderSelect.appendChild(option);
+            }
+        }
+
+        function markOutOfOrder() {
+            const roomNumber = document.getElementById('out-of-order-room').value;
+            housekeepingStatus[roomNumber - 1] = 'out-of-order';
+            localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
+            updateHousekeeping();
+        }
+
+        function removeOutOfOrder() {
+            const roomNumber = document.getElementById('out-of-order-room').value;
+            housekeepingStatus[roomNumber - 1] = 'vacant';
+            localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
+            updateHousekeeping();
         }
 
         function updateFrontDesk() {
@@ -234,7 +299,6 @@
                 option.textContent = `Room ${i}`;
                 roomSelect.appendChild(option);
             }
-
             updateFrontDesk();
         }
 
@@ -307,24 +371,45 @@
             alert('Issue reported.');
         }
 
-        function chargeCreditCard() {
+        function postCharge() {
             const bookingNumber = document.getElementById('billing-booking-number').value;
-            const cardType = document.getElementById('billing-credit-card').value;
+            const chargeCode = document.getElementById('billing-charge-code').value;
+            const date = document.getElementById('billing-charge-date').value;
+            const amount = parseFloat(document.getElementById('billing-charge-amount').value);
 
-            const res = reservations.find(r => r.bookingNumber == bookingNumber);
-            if (res) {
-                const charge = calculateCharge(res.roomNumber);
+            if (!charges[bookingNumber]) {
+                charges[bookingNumber] = { balance: 0, items: [] };
+            }
+            charges[bookingNumber].items.push({ code: chargeCode, date, amount });
+            charges[bookingNumber].balance += amount;
+            localStorage.setItem('charges', JSON.stringify(charges));
+            updateFrontDesk();
+            alert('Charge posted.');
+        }
+
+        function processPayment() {
+            const bookingNumber = document.getElementById('billing-booking-number').value;
+            const cardNumber = document.getElementById('payment-credit-card-number').value;
+            const expiryDate = document.getElementById('payment-expiry-date').value;
+            const cardType = document.getElementById('payment-credit-card-type').value;
+
+            const charge = charges[bookingNumber];
+            if (charge) {
+                const amount = charge.balance;
                 const billingSummaryDiv = document.querySelector('#billing-summary');
-                billingSummaryDiv.innerHTML = `Booking Number: ${bookingNumber}<br>Guest Name: ${res.guestName}<br>Room Number: ${res.roomNumber}<br>Total Charge: $${charge}`;
+                billingSummaryDiv.innerHTML = `Booking Number: ${bookingNumber}<br>Total Charge: $${amount}`;
                 document.querySelector('#billing-info').classList.remove('hidden');
+
+                // Simulate payment processing
+                setTimeout(() => {
+                    charge.balance = 0;
+                    localStorage.setItem('charges', JSON.stringify(charges));
+                    alert('Payment processed. Checking out.');
+                    checkOut(); // Automatically check out if balance is zero
+                }, 1000);
             } else {
                 alert('Reservation not found.');
             }
-        }
-
-        function calculateCharge(roomNumber) {
-            // Simple charge calculation (e.g., $100 per night)
-            return 100;
         }
 
         // Initialize reservation options
