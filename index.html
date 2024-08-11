@@ -97,6 +97,17 @@
             <div class="room-status" id="housekeeping-room-status">
                 <!-- Room status will be dynamically inserted here -->
             </div>
+            <div id="housekeeping-controls">
+                <h3>Set Room Status</h3>
+                <div class="form-group">
+                    <label for="housekeeping-room">Room Number</label>
+                    <select id="housekeeping-room">
+                        <!-- Room numbers will be dynamically inserted here -->
+                    </select>
+                </div>
+                <button class="button" onclick="setRoomStatus('clean')">Set Clean</button>
+                <button class="button" onclick="setRoomStatus('dirty')">Set Dirty</button>
+            </div>
             <div id="out-of-order-form">
                 <h3>Mark Room Out of Order</h3>
                 <div class="form-group">
@@ -121,44 +132,34 @@
                 </div>
                 <button class="button" onclick="checkIn()">Check In</button>
             </div>
-            <div id="checkout-form">
-                <h3>Check-out</h3>
-                <div class="form-group">
-                    <label for="checkout-booking-number">Booking Number</label>
-                    <input type="text" id="checkout-booking-number" placeholder="Enter Booking Number">
-                </div>
-                <button class="button" onclick="checkOut()">Check Out</button>
-            </div>
             <div id="billing-form">
                 <h3>Billing</h3>
                 <div class="form-group">
                     <label for="billing-booking-number">Booking Number</label>
-                    <input type="text" id="billing-booking-number" placeholder="Enter Booking Number">
+                    <input type="text" id="billing-booking-number" placeholder="Enter Booking Number" oninput="loadBillingInfo()">
                 </div>
-                <div class="form-group">
-                    <label for="billing-charge-code">Charge Code</label>
-                    <select id="billing-charge-code">
-                        <option value="0001">Accommodation</option>
-                        <option value="0002">Car Park</option>
-                        <!-- Additional charge codes can be added here -->
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="billing-charge-date">Date</label>
-                    <input type="date" id="billing-charge-date">
-                </div>
-                <div class="form-group">
-                    <label for="billing-charge-amount">Amount</label>
-                    <input type="number" id="billing-charge-amount" step="0.01" placeholder="Enter Amount">
-                </div>
-                <button class="button" onclick="postCharge()">Post Charge</button>
                 <div id="billing-info" class="hidden">
-                    <h3>Charges</h3>
+                    <h3>Charges & Payments</h3>
                     <div id="billing-summary">
                         <!-- Billing summary will be dynamically inserted here -->
                     </div>
-                </div>
-                <div id="payment-form">
+                    <div class="form-group">
+                        <label for="billing-charge-code">Charge Code</label>
+                        <select id="billing-charge-code">
+                            <option value="0001">Accommodation</option>
+                            <option value="0002">Car Park</option>
+                            <!-- Additional charge codes can be added here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="billing-charge-date">Date</label>
+                        <input type="date" id="billing-charge-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="billing-amount">Amount</label>
+                        <input type="number" id="billing-amount" step="0.01" placeholder="Enter Amount">
+                    </div>
+                    <button class="button" onclick="postCharge()">Post Charge</button>
                     <h3>Process Payment</h3>
                     <div class="form-group">
                         <label for="payment-credit-card-number">Credit Card Number</label>
@@ -176,7 +177,8 @@
                             <option value="master">MasterCard</option>
                         </select>
                     </div>
-                    <button class="button" onclick="processPayment()">Process Payment</button>
+                    <button class="button" onclick="postPayment()">Post Payment</button>
+                    <button class="button hidden" id="checkout-button" onclick="checkOut()">Check Out</button>
                 </div>
             </div>
             <div id="current-reservations">
@@ -220,6 +222,7 @@
                 <input type="text" id="maintenance-issue" placeholder="Describe the issue">
             </div>
             <button class="button" onclick="reportIssue()">Report Issue</button>
+            <button class="button" onclick="markOutOfOrder()">Mark Out of Order</button>
             <div id="issue-list">
                 <h3>Reported Issues</h3>
                 <div class="issue-list" id="issue-list-content">
@@ -233,192 +236,166 @@
         const housekeepingStatus = JSON.parse(localStorage.getItem('housekeepingStatus')) || Array(totalRooms).fill('vacant');
         const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
         const issues = JSON.parse(localStorage.getItem('issues')) || [];
-        const charges = JSON.parse(localStorage.getItem('charges')) || {};
-        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateRoomStatusDisplay();
+            populateRoomSelect();
+            populateReservationList();
+            populateIssueList();
+        });
+
         function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
-            if (sectionId === 'housekeeping') updateHousekeeping();
-            if (sectionId === 'frontdesk') updateFrontDesk();
-            if (sectionId === 'reservation') updateReservation();
-            if (sectionId === 'maintenance') updateMaintenance();
         }
 
-        function updateHousekeeping() {
-            const roomStatusDiv = document.querySelector('#housekeeping-room-status');
-            roomStatusDiv.innerHTML = '';
-            for (let i = 1; i <= totalRooms; i++) {
-                const status = housekeepingStatus[i-1];
+        function updateRoomStatusDisplay() {
+            const roomStatusContainer = document.getElementById('housekeeping-room-status');
+            roomStatusContainer.innerHTML = '';
+            housekeepingStatus.forEach((status, index) => {
                 const roomDiv = document.createElement('div');
-                roomDiv.className = `room ${status}`;
-                roomDiv.innerHTML = `<strong>Room ${i}</strong><br>Status: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
-                roomStatusDiv.appendChild(roomDiv);
-            }
-            const outOfOrderSelect = document.getElementById('out-of-order-room');
-            outOfOrderSelect.innerHTML = '';
-            for (let i = 1; i <= totalRooms; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = `Room ${i}`;
-                outOfOrderSelect.appendChild(option);
-            }
+                roomDiv.classList.add('room', status);
+                roomDiv.textContent = `Room ${index + 1} - ${status}`;
+                roomStatusContainer.appendChild(roomDiv);
+            });
+        }
+
+        function populateRoomSelect() {
+            const roomSelects = document.querySelectorAll('#housekeeping-room, #reservation-room, #out-of-order-room, #maintenance-room');
+            roomSelects.forEach(select => {
+                select.innerHTML = '';
+                for (let i = 1; i <= totalRooms; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `Room ${i}`;
+                    select.appendChild(option);
+                }
+            });
+        }
+
+        function populateReservationList() {
+            const reservationList = document.getElementById('reservation-list');
+            reservationList.innerHTML = '';
+            reservations.forEach((reservation, index) => {
+                const reservationDiv = document.createElement('div');
+                reservationDiv.textContent = `Reservation ${index + 1}: ${reservation.name}, Room ${reservation.room}`;
+                reservationList.appendChild(reservationDiv);
+            });
+        }
+
+        function populateIssueList() {
+            const issueListContent = document.getElementById('issue-list-content');
+            issueListContent.innerHTML = '';
+            issues.forEach((issue, index) => {
+                const issueDiv = document.createElement('div');
+                issueDiv.textContent = `Issue ${index + 1}: Room ${issue.room} - ${issue.description}`;
+                issueListContent.appendChild(issueDiv);
+            });
+        }
+
+        function setRoomStatus(status) {
+            const roomIndex = document.getElementById('housekeeping-room').value - 1;
+            housekeepingStatus[roomIndex] = status;
+            localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
+            updateRoomStatusDisplay();
         }
 
         function markOutOfOrder() {
-            const roomNumber = document.getElementById('out-of-order-room').value;
-            housekeepingStatus[roomNumber - 1] = 'out-of-order';
+            const roomIndex = document.getElementById('out-of-order-room').value - 1;
+            housekeepingStatus[roomIndex] = 'out-of-order';
             localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-            updateHousekeeping();
+            updateRoomStatusDisplay();
         }
 
         function removeOutOfOrder() {
-            const roomNumber = document.getElementById('out-of-order-room').value;
-            housekeepingStatus[roomNumber - 1] = 'vacant';
+            const roomIndex = document.getElementById('out-of-order-room').value - 1;
+            housekeepingStatus[roomIndex] = 'vacant';
             localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-            updateHousekeeping();
+            updateRoomStatusDisplay();
         }
 
-        function updateFrontDesk() {
-            const reservationListDiv = document.querySelector('#reservation-list');
-            reservationListDiv.innerHTML = '';
-            reservations.forEach(res => {
-                const resDiv = document.createElement('div');
-                resDiv.textContent = `Booking Number: ${res.bookingNumber}, Guest: ${res.guestName}, Room: ${res.roomNumber}`;
-                reservationListDiv.appendChild(resDiv);
-            });
-            const billingInfoDiv = document.querySelector('#billing-info');
-            billingInfoDiv.classList.add('hidden');
-        }
-
-        function updateReservation() {
-            const roomSelect = document.getElementById('reservation-room');
-            roomSelect.innerHTML = '';
-            for (let i = 1; i <= totalRooms; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = `Room ${i}`;
-                roomSelect.appendChild(option);
+        function checkIn() {
+            const bookingNumber = document.getElementById('checkin-booking-number').value;
+            const reservationIndex = reservations.findIndex(reservation => reservation.bookingNumber === bookingNumber);
+            if (reservationIndex > -1) {
+                const roomIndex = reservations[reservationIndex].room - 1;
+                housekeepingStatus[roomIndex] = 'occupied';
+                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
+                updateRoomStatusDisplay();
+                alert('Check-in successful');
+            } else {
+                alert('Invalid booking number');
             }
-            updateFrontDesk();
         }
 
-        function updateMaintenance() {
-            const roomSelect = document.getElementById('maintenance-room');
-            roomSelect.innerHTML = '';
-            for (let i = 1; i <= totalRooms; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = `Room ${i}`;
-                roomSelect.appendChild(option);
+        function loadBillingInfo() {
+            const bookingNumber = document.getElementById('billing-booking-number').value;
+            const reservation = reservations.find(reservation => reservation.bookingNumber === bookingNumber);
+            if (reservation) {
+                document.getElementById('billing-info').classList.remove('hidden');
+            } else {
+                document.getElementById('billing-info').classList.add('hidden');
             }
-            const issueListDiv = document.querySelector('#issue-list-content');
-            issueListDiv.innerHTML = '';
-            issues.forEach(issue => {
-                const issueDiv = document.createElement('div');
-                issueDiv.textContent = `Room ${issue.roomNumber}: ${issue.issue}`;
-                issueListDiv.appendChild(issueDiv);
-            });
+        }
+
+        function postCharge() {
+            const bookingNumber = document.getElementById('billing-booking-number').value;
+            const reservation = reservations.find(reservation => reservation.bookingNumber === bookingNumber);
+            if (reservation) {
+                const chargeCode = document.getElementById('billing-charge-code').value;
+                const chargeDate = document.getElementById('billing-charge-date').value;
+                const amount = document.getElementById('billing-amount').value;
+                // Implement charge posting logic here
+                alert(`Charge posted: ${amount} for booking ${bookingNumber}`);
+            }
+        }
+
+        function postPayment() {
+            const bookingNumber = document.getElementById('billing-booking-number').value;
+            const reservation = reservations.find(reservation => reservation.bookingNumber === bookingNumber);
+            if (reservation) {
+                const cardNumber = document.getElementById('payment-credit-card-number').value;
+                const expiryDate = document.getElementById('payment-expiry-date').value;
+                const cardType = document.getElementById('payment-credit-card-type').value;
+                // Implement payment processing logic here
+                alert(`Payment processed: ${cardType} ending in ${cardNumber.slice(-4)} for booking ${bookingNumber}`);
+            }
+        }
+
+        function checkOut() {
+            const bookingNumber = document.getElementById('billing-booking-number').value;
+            const reservationIndex = reservations.findIndex(reservation => reservation.bookingNumber === bookingNumber);
+            if (reservationIndex > -1) {
+                const roomIndex = reservations[reservationIndex].room - 1;
+                housekeepingStatus[roomIndex] = 'vacant';
+                reservations.splice(reservationIndex, 1);
+                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
+                localStorage.setItem('reservations', JSON.stringify(reservations));
+                updateRoomStatusDisplay();
+                populateReservationList();
+                alert('Check-out successful');
+            }
         }
 
         function makeReservation() {
             const name = document.getElementById('reservation-name').value;
             const room = document.getElementById('reservation-room').value;
-            const bookingNumber = Math.floor(Math.random() * 100000);
-
-            reservations.push({ bookingNumber, guestName: name, roomNumber: room });
+            const bookingNumber = Math.random().toString(36).substr(2, 9);
+            reservations.push({ name, room, bookingNumber });
             localStorage.setItem('reservations', JSON.stringify(reservations));
-
-            updateReservation();
-            updateFrontDesk();
-        }
-
-        function checkIn() {
-            const bookingNumber = document.getElementById('checkin-booking-number').value;
-            const res = reservations.find(r => r.bookingNumber == bookingNumber);
-            if (res) {
-                housekeepingStatus[res.roomNumber - 1] = 'occupied';
-                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-                localStorage.setItem('reservations', JSON.stringify(reservations.filter(r => r.bookingNumber != bookingNumber)));
-                updateHousekeeping();
-                updateFrontDesk();
-            } else {
-                alert('Reservation not found.');
-            }
-        }
-
-        function checkOut() {
-            const bookingNumber = document.getElementById('checkout-booking-number').value;
-            const res = reservations.find(r => r.bookingNumber == bookingNumber);
-            if (res) {
-                housekeepingStatus[res.roomNumber - 1] = 'vacant';
-                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-                localStorage.setItem('reservations', JSON.stringify(reservations.filter(r => r.bookingNumber != bookingNumber)));
-                updateHousekeeping();
-                updateFrontDesk();
-            } else {
-                alert('Reservation not found.');
-            }
+            populateReservationList();
+            alert('Reservation made successfully');
         }
 
         function reportIssue() {
-            const roomNumber = document.getElementById('maintenance-room').value;
-            const issue = document.getElementById('maintenance-issue').value;
-
-            issues.push({ roomNumber, issue });
+            const room = document.getElementById('maintenance-room').value;
+            const description = document.getElementById('maintenance-issue').value;
+            issues.push({ room, description });
             localStorage.setItem('issues', JSON.stringify(issues));
-
-            updateMaintenance();
-            alert('Issue reported.');
+            populateIssueList();
+            alert('Issue reported successfully');
         }
-
-        function postCharge() {
-            const bookingNumber = document.getElementById('billing-booking-number').value;
-            const chargeCode = document.getElementById('billing-charge-code').value;
-            const date = document.getElementById('billing-charge-date').value;
-            const amount = parseFloat(document.getElementById('billing-charge-amount').value);
-
-            if (!charges[bookingNumber]) {
-                charges[bookingNumber] = { balance: 0, items: [] };
-            }
-            charges[bookingNumber].items.push({ code: chargeCode, date, amount });
-            charges[bookingNumber].balance += amount;
-            localStorage.setItem('charges', JSON.stringify(charges));
-            updateFrontDesk();
-            alert('Charge posted.');
-        }
-
-        function processPayment() {
-            const bookingNumber = document.getElementById('billing-booking-number').value;
-            const cardNumber = document.getElementById('payment-credit-card-number').value;
-            const expiryDate = document.getElementById('payment-expiry-date').value;
-            const cardType = document.getElementById('payment-credit-card-type').value;
-
-            const charge = charges[bookingNumber];
-            if (charge) {
-                const amount = charge.balance;
-                const billingSummaryDiv = document.querySelector('#billing-summary');
-                billingSummaryDiv.innerHTML = `Booking Number: ${bookingNumber}<br>Total Charge: $${amount}`;
-                document.querySelector('#billing-info').classList.remove('hidden');
-
-                // Simulate payment processing
-                setTimeout(() => {
-                    charge.balance = 0;
-                    localStorage.setItem('charges', JSON.stringify(charges));
-                    alert('Payment processed. Checking out.');
-                    checkOut(); // Automatically check out if balance is zero
-                }, 1000);
-            } else {
-                alert('Reservation not found.');
-            }
-        }
-
-        // Initialize reservation options
-        document.addEventListener('DOMContentLoaded', () => {
-            updateHousekeeping();
-            updateReservation();
-            updateFrontDesk();
-            updateMaintenance();
-        });
     </script>
 </body>
 </html>
