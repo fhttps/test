@@ -1,426 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Operational System</title>
+    <title>Web Development Workshop</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            color: #333;
         }
+
         .container {
-            width: 80%;
             max-width: 1200px;
-            margin-top: 20px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .button {
-            padding: 10px 20px;
-            margin: 5px;
-            border: none;
-            background-color: #007BFF;
+
+        header {
+            background-color: #4CAF50;
             color: white;
-            cursor: pointer;
-            font-size: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+            position: relative;
         }
-        .button:hover {
-            background-color: #0056b3;
+
+        header:hover {
+            background-color: #45a049;
         }
-        .hidden {
-            display: none;
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
-        .section {
-            margin: 20px 0;
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input,
-        .form-group select {
+
+        .video-placeholder {
+            background-color: #ddd;
             width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
-        .room-status {
-            display: flex;
-            flex-wrap: wrap;
+
+        .video-placeholder video {
+            width: 100%;
+            border-radius: 8px;
         }
-        .room {
-            width: 20%;
-            padding: 15px;
-            margin: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #4CAF50;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
         }
-        .room.occupied {
-            background-color: #f8d7da;
+
+        .cta-button:hover {
+            background-color: #45a049;
+            transform: translateY(-5px);
         }
-        .room.dirty {
-            background-color: #fff3cd;
+
+        .language-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
-        .room.vacant {
-            background-color: #d4edda;
+
+        .language-switch button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #333;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
         }
-        .room.out-of-order {
-            background-color: #ffffe0; /* Yellow */
+
+        .language-switch button:hover {
+            background-color: #555;
         }
-        .reservation-list div,
-        .issue-list div {
-            margin-bottom: 10px;
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        footer a {
+            color: #4CAF50;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #45a049;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .cost-info {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: center;
         }
     </style>
 </head>
+
 <body>
-    <div class="header">
-        <h1>Hotel Operational System</h1>
-        <button class="button" onclick="showSection('housekeeping')">Housekeeping</button>
-        <button class="button" onclick="showSection('frontdesk')">Front Desk</button>
-        <button class="button" onclick="showSection('reservation')">Reservation</button>
-        <button class="button" onclick="showSection('maintenance')">Maintenance</button>
-    </div>
+    <header>
+        <div class="container">
+            <h1 id="title">Welcome to the Web Development Workshop</h1>
+            <div class="language-switch">
+                <button onclick="switchLanguage('en')">English</button>
+                <button onclick="switchLanguage('pt')">Português</button>
+            </div>
+        </div>
+    </header>
+
     <div class="container">
-        <!-- Housekeeping Section -->
-        <div id="housekeeping" class="section hidden">
-            <h2>Housekeeping</h2>
-            <div class="room-status" id="housekeeping-room-status">
-                <!-- Room status will be dynamically inserted here -->
-            </div>
-            <div id="housekeeping-controls">
-                <h3>Set Room Status</h3>
-                <div class="form-group">
-                    <label for="housekeeping-room">Room Number</label>
-                    <select id="housekeeping-room">
-                        <!-- Room numbers will be dynamically inserted here -->
-                    </select>
-                </div>
-                <button class="button" onclick="setRoomStatus('clean')">Set Clean</button>
-                <button class="button" onclick="setRoomStatus('dirty')">Set Dirty</button>
-            </div>
-            <div id="out-of-order-form">
-                <h3>Mark Room Out of Order</h3>
-                <div class="form-group">
-                    <label for="out-of-order-room">Room Number</label>
-                    <select id="out-of-order-room">
-                        <!-- Room numbers will be dynamically inserted here -->
-                    </select>
-                </div>
-                <button class="button" onclick="markOutOfOrder()">Mark Out of Order</button>
-                <button class="button" onclick="removeOutOfOrder()">Remove Out of Order</button>
-            </div>
+        <p id="description">
+            Are you ready to dive into the world of web development? Join us for a hands-on workshop where we'll explore the fundamentals of <strong>HTML</strong>, <strong>CSS</strong>, and <strong>JavaScript</strong>. Whether you're a beginner or looking to refresh your skills, this workshop will provide the tools and knowledge you need to start building your own web projects.
+        </p>
+        <p>
+            The workshop will cover everything from structuring your web pages with HTML, styling them with CSS, to adding interactive features using JavaScript. Plus, you'll get the chance to collaborate with other participants, share your progress, and get feedback from experienced developers.
+        </p>
+
+        <div class="video-placeholder">
+            <p>Your video here:</p>
+            <video controls>
+                <source src="your-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
-        <!-- Front Desk Section -->
-        <div id="frontdesk" class="section hidden">
-            <h2>Front Desk</h2>
-            <div id="checkin-form">
-                <h3>Check-in</h3>
-                <div class="form-group">
-                    <label for="checkin-booking-number">Booking Number</label>
-                    <input type="text" id="checkin-booking-number" placeholder="Enter Booking Number">
-                </div>
-                <button class="button" onclick="checkIn()">Check In</button>
-            </div>
-            <div id="billing-form">
-                <h3>Billing</h3>
-                <div class="form-group">
-                    <label for="billing-booking-number">Booking Number</label>
-                    <input type="text" id="billing-booking-number" placeholder="Enter Booking Number" oninput="loadBillingInfo()">
-                </div>
-                <div id="billing-info" class="hidden">
-                    <h3>Charges & Payments</h3>
-                    <div id="billing-summary">
-                        <!-- Billing summary will be dynamically inserted here -->
-                    </div>
-                    <div class="form-group">
-                        <label for="billing-charge-code">Charge Code</label>
-                        <select id="billing-charge-code">
-                            <option value="0001">Accommodation</option>
-                            <option value="0002">Car Park</option>
-                            <!-- Additional charge codes can be added here -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="billing-charge-date">Date</label>
-                        <input type="date" id="billing-charge-date">
-                    </div>
-                    <div class="form-group">
-                        <label for="billing-amount">Amount</label>
-                        <input type="number" id="billing-amount" step="0.01" placeholder="Enter Amount">
-                    </div>
-                    <button class="button" onclick="postCharge()">Post Charge</button>
-                    <h3>Process Payment</h3>
-                    <div class="form-group">
-                        <label for="payment-credit-card-number">Credit Card Number</label>
-                        <input type="text" id="payment-credit-card-number" placeholder="Enter Credit Card Number">
-                    </div>
-                    <div class="form-group">
-                        <label for="payment-expiry-date">Expiry Date</label>
-                        <input type="month" id="payment-expiry-date">
-                    </div>
-                    <div class="form-group">
-                        <label for="payment-credit-card-type">Card Type</label>
-                        <select id="payment-credit-card-type">
-                            <option value="visa">Visa</option>
-                            <option value="amex">Amex</option>
-                            <option value="master">MasterCard</option>
-                        </select>
-                    </div>
-                    <button class="button" onclick="postPayment()">Post Payment</button>
-                    <button class="button hidden" id="checkout-button" onclick="checkOut()">Check Out</button>
-                </div>
-            </div>
-            <div id="current-reservations">
-                <h3>Current Reservations</h3>
-                <div class="reservation-list" id="reservation-list">
-                    <!-- Reservations will be dynamically inserted here -->
-                </div>
-            </div>
+        <p>
+            Don't miss out on this opportunity to enhance your web development skills! <a href="https://www.example-platform.com" class="cta-button">Upload Your Code & Collaborate</a>
+        </p>
+
+        <div class="cost-info">
+            <p id="cost">Cost: £200 British Pounds Total</p>
         </div>
 
-        <!-- Reservation Section -->
-        <div id="reservation" class="section hidden">
-            <h2>Reservation</h2>
-            <div id="reservation-form">
-                <h3>Make a Reservation</h3>
-                <div class="form-group">
-                    <label for="reservation-name">Guest Name</label>
-                    <input type="text" id="reservation-name" placeholder="Enter Guest Name">
-                </div>
-                <div class="form-group">
-                    <label for="reservation-room">Room Number</label>
-                    <select id="reservation-room">
-                        <!-- Room numbers will be dynamically inserted here -->
-                    </select>
-                </div>
-                <button class="button" onclick="makeReservation()">Reserve</button>
-            </div>
-        </div>
-
-        <!-- Maintenance Section -->
-        <div id="maintenance" class="section hidden">
-            <h2>Maintenance</h2>
-            <div class="form-group">
-                <label for="maintenance-room">Room Number</label>
-                <select id="maintenance-room">
-                    <!-- Room numbers will be dynamically inserted here -->
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="maintenance-issue">Issue Description</label>
-                <input type="text" id="maintenance-issue" placeholder="Describe the issue">
-            </div>
-            <button class="button" onclick="reportIssue()">Report Issue</button>
-            <button class="button" onclick="markOutOfOrder()">Mark Out of Order</button>
-            <div id="issue-list">
-                <h3>Reported Issues</h3>
-                <div class="issue-list" id="issue-list-content">
-                    <!-- Issues will be dynamically inserted here -->
-                </div>
-            </div>
+        <div class="contact-info">
+            <p id="contact">Contact us at: <a href="mailto:contact@webdevworkshop.com">contact@webdevworkshop.com</a></p>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2024 Web Dev Workshop. All rights reserved. <br>
+            Check out our platform: <a href="https://www.example-platform.com">example-platform.com</a>
+        </p>
+    </footer>
+
     <script>
-        const totalRooms = 10;
-        const housekeepingStatus = JSON.parse(localStorage.getItem('housekeepingStatus')) || Array(totalRooms).fill('vacant');
-        const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
-        const billingData = JSON.parse(localStorage.getItem('billingData')) || {};
-        const issues = JSON.parse(localStorage.getItem('issues')) || [];
-
-        function showSection(section) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById(section).classList.remove('hidden');
-            if (section === 'housekeeping') {
-                updateHousekeeping();
-            } else if (section === 'frontdesk') {
-                updateReservations();
-            } else if (section === 'reservation') {
-                populateRoomSelection('reservation-room');
-            } else if (section === 'maintenance') {
-                populateRoomSelection('maintenance-room');
-                updateIssues();
-            }
-        }
-
-        function updateHousekeeping() {
-            const housekeepingRoomStatus = document.getElementById('housekeeping-room-status');
-            housekeepingRoomStatus.innerHTML = '';
-            housekeepingStatus.forEach((status, index) => {
-                const roomDiv = document.createElement('div');
-                roomDiv.className = `room ${status}`;
-                roomDiv.innerText = `Room ${index + 1} - ${status.charAt(0).toUpperCase() + status.slice(1)}`;
-                housekeepingRoomStatus.appendChild(roomDiv);
-            });
-            populateRoomSelection('housekeeping-room');
-            populateRoomSelection('out-of-order-room');
-        }
-
-        function setRoomStatus(status) {
-            const roomNumber = document.getElementById('housekeeping-room').value;
-            housekeepingStatus[roomNumber - 1] = status;
-            localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-            updateHousekeeping();
-        }
-
-        function markOutOfOrder() {
-            const roomNumber = document.getElementById('out-of-order-room').value;
-            housekeepingStatus[roomNumber - 1] = 'out-of-order';
-            localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-            updateHousekeeping();
-        }
-
-        function removeOutOfOrder() {
-            const roomNumber = document.getElementById('out-of-order-room').value;
-            housekeepingStatus[roomNumber - 1] = 'vacant';
-            localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-            updateHousekeeping();
-        }
-
-        function updateReservations() {
-            const reservationList = document.getElementById('reservation-list');
-            reservationList.innerHTML = '';
-            reservations.forEach(reservation => {
-                const div = document.createElement('div');
-                div.innerText = `Room ${reservation.room} - ${reservation.name}`;
-                reservationList.appendChild(div);
-            });
-            populateRoomSelection('reservation-room');
-        }
-
-        function makeReservation() {
-            const name = document.getElementById('reservation-name').value;
-            const roomNumber = document.getElementById('reservation-room').value;
-            if (name && roomNumber && housekeepingStatus[roomNumber - 1] !== 'occupied' && housekeepingStatus[roomNumber - 1] !== 'out-of-order') {
-                reservations.push({ name, room: roomNumber });
-                housekeepingStatus[roomNumber - 1] = 'occupied';
-                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-                localStorage.setItem('reservations', JSON.stringify(reservations));
-                updateReservations();
+        function switchLanguage(lang) {
+            if (lang === 'pt') {
+                document.getElementById('title').innerText = 'Bem-vindo ao Workshop de Desenvolvimento Web';
+                document.getElementById('description').innerText = 'Está pronto para mergulhar no mundo do desenvolvimento web? Junte-se a nós em um workshop prático onde exploraremos os fundamentos de HTML, CSS e JavaScript. Seja você iniciante ou esteja procurando atualizar suas habilidades, este workshop fornecerá as ferramentas e o conhecimento que você precisa para começar a construir seus próprios projetos na web.';
+                document.getElementById('cost').innerText = 'Custo: £200 Libras Esterlinas no Total';
+                document.getElementById('contact').innerHTML = 'Entre em contato conosco: <a href="mailto:contact@webdevworkshop.com">contact@webdevworkshop.com</a>';
             } else {
-                alert('Invalid reservation. The room is either occupied or out-of-order.');
+                document.getElementById('title').innerText = 'Welcome to the Web Development Workshop';
+                document.getElementById('description').innerText = 'Are you ready to dive into the world of web development? Join us for a hands-on workshop where we\'ll explore the fundamentals of HTML, CSS, and JavaScript. Whether you\'re a beginner or looking to refresh your skills, this workshop will provide the tools and knowledge you need to start building your own web projects.';
+                document.getElementById('cost').innerText = 'Cost: £200 British Pounds Total';
+                document.getElementById('contact').innerHTML = 'Contact us at: <a href="mailto:contact@webdevworkshop.com">contact@webdevworkshop.com</a>';
             }
         }
-
-        function checkIn() {
-            const bookingNumber = document.getElementById('checkin-booking-number').value;
-            const reservation = reservations.find(r => r.bookingNumber === bookingNumber);
-            if (reservation) {
-                const roomNumber = reservation.room;
-                housekeepingStatus[roomNumber - 1] = 'occupied';
-                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-                updateReservations();
-            } else {
-                alert('Booking number not found.');
-            }
-        }
-
-        function loadBillingInfo() {
-            const bookingNumber = document.getElementById('billing-booking-number').value;
-            const billingInfo = billingData[bookingNumber] || { charges: [], payments: [] };
-            const billingSummary = document.getElementById('billing-summary');
-            billingSummary.innerHTML = '';
-            let totalCharges = 0;
-            billingInfo.charges.forEach(charge => {
-                totalCharges += parseFloat(charge.amount);
-                billingSummary.innerHTML += `<div>${charge.date}: ${charge.chargeCode} - $${charge.amount}</div>`;
-            });
-            billingInfo.payments.forEach(payment => {
-                totalCharges -= parseFloat(payment.amount);
-                billingSummary.innerHTML += `<div>${payment.date}: Payment - $${payment.amount}</div>`;
-            });
-            billingSummary.innerHTML += `<div><strong>Total Due: $${totalCharges.toFixed(2)}</strong></div>`;
-            document.getElementById('billing-info').classList.remove('hidden');
-            document.getElementById('checkout-button').classList.toggle('hidden', totalCharges !== 0);
-        }
-
-        function postCharge() {
-            const bookingNumber = document.getElementById('billing-booking-number').value;
-            const chargeCode = document.getElementById('billing-charge-code').value;
-            const date = document.getElementById('billing-charge-date').value;
-            const amount = document.getElementById('billing-amount').value;
-            if (bookingNumber && chargeCode && date && amount) {
-                billingData[bookingNumber] = billingData[bookingNumber] || { charges: [], payments: [] };
-                billingData[bookingNumber].charges.push({ chargeCode, date, amount });
-                localStorage.setItem('billingData', JSON.stringify(billingData));
-                loadBillingInfo();
-            }
-        }
-
-        function postPayment() {
-            const bookingNumber = document.getElementById('billing-booking-number').value;
-            const cardNumber = document.getElementById('payment-credit-card-number').value;
-            const expiryDate = document.getElementById('payment-expiry-date').value;
-            const cardType = document.getElementById('payment-credit-card-type').value;
-            const amount = parseFloat(document.getElementById('billing-summary').querySelector('strong').innerText.split('$')[1]);
-            if (bookingNumber && cardNumber && expiryDate && cardType && amount) {
-                billingData[bookingNumber] = billingData[bookingNumber] || { charges: [], payments: [] };
-                billingData[bookingNumber].payments.push({ cardNumber, expiryDate, cardType, amount });
-                localStorage.setItem('billingData', JSON.stringify(billingData));
-                loadBillingInfo();
-            }
-        }
-
-        function checkOut() {
-            const bookingNumber = document.getElementById('billing-booking-number').value;
-            const reservationIndex = reservations.findIndex(r => r.bookingNumber === bookingNumber);
-            if (reservationIndex !== -1) {
-                const roomNumber = reservations[reservationIndex].room;
-                housekeepingStatus[roomNumber - 1] = 'dirty';
-                reservations.splice(reservationIndex, 1);
-                localStorage.setItem('housekeepingStatus', JSON.stringify(housekeepingStatus));
-                localStorage.setItem('reservations', JSON.stringify(reservations));
-                updateReservations();
-                document.getElementById('billing-info').classList.add('hidden');
-                alert('Check-out successful.');
-            }
-        }
-
-        function reportIssue() {
-            const roomNumber = document.getElementById('maintenance-room').value;
-            const issueDescription = document.getElementById('maintenance-issue').value;
-            if (roomNumber && issueDescription) {
-                issues.push({ roomNumber, description: issueDescription });
-                localStorage.setItem('issues', JSON.stringify(issues));
-                updateIssues();
-            }
-        }
-
-        function updateIssues() {
-            const issueListContent = document.getElementById('issue-list-content');
-            issueListContent.innerHTML = '';
-            issues.forEach(issue => {
-                const div = document.createElement('div');
-                div.innerText = `Room ${issue.roomNumber}: ${issue.description}`;
-                issueListContent.appendChild(div);
-            });
-        }
-
-        function populateRoomSelection(elementId) {
-            const select = document.getElementById(elementId);
-            select.innerHTML = '';
-            for (let i = 1; i <= totalRooms; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.text = `Room ${i}`;
-                select.appendChild(option);
-            }
-        }
-
-        // Initialize the system
-        populateRoomSelection('housekeeping-room');
-        populateRoomSelection('out-of-order-room');
-        updateHousekeeping();
     </script>
 </body>
+
 </html>
