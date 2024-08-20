@@ -79,9 +79,10 @@
         }
 
         .language-switch {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
+            z-index: 1000;
         }
 
         .language-switch button {
@@ -143,13 +144,14 @@
 </head>
 
 <body>
+    <div class="language-switch">
+        <button onclick="switchLanguage('en')">English</button>
+        <button onclick="switchLanguage('pt')">Português</button>
+    </div>
+
     <header>
         <div class="container">
             <h1 id="title">Welcome to the Web Development Workshop</h1>
-            <div class="language-switch">
-                <button onclick="switchLanguage('en')">English</button>
-                <button onclick="switchLanguage('pt')">Português</button>
-            </div>
         </div>
     </header>
 
@@ -157,12 +159,12 @@
         <p id="description">
             Are you ready to dive into the world of web development? Join us for a hands-on workshop where we'll explore the fundamentals of <strong>HTML</strong>, <strong>CSS</strong>, and <strong>JavaScript</strong>. Whether you're a beginner or looking to refresh your skills, this workshop will provide the tools and knowledge you need to start building your own web projects.
         </p>
-        <p>
+        <p id="details">
             The workshop will cover everything from structuring your web pages with HTML, styling them with CSS, to adding interactive features using JavaScript. Plus, you'll get the chance to collaborate with other participants, share your progress, and get feedback from experienced developers.
         </p>
 
         <div class="video-placeholder">
-            <p>Your video here:</p>
+            <p id="video-text">Your video here:</p>
             <video controls>
                 <source src="your-video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -170,13 +172,13 @@
         </div>
 
         <p>
-            Don't miss out on this opportunity to enhance your web development skills! <a href="https://www.example-platform.com" class="cta-button">Soon a platform for HTML, CSS and JavaScript. To upload codes and share knowledge.</a>
+            <a href="https://www.example-platform.com" id="cta-button" class="cta-button">Soon a platform for HTML, CSS and JavaScript. To upload codes and share knowledge.</a>
         </p>
 
         <div class="cost-info">
             <p id="cost">Cost: £200 British Pounds</p>
-            <p>This course covers HTML, CSS, and JavaScript over 9 weeks.</p>
-            <p>Gain foundational skills to start learning frameworks afterwards.</p>
+            <p id="course-details">This course covers HTML, CSS, and JavaScript over 9 weeks.</p>
+            <p id="skills-info">Gain foundational skills to start learning frameworks afterwards.</p>
         </div>
 
         <div class="contact-info">
@@ -185,7 +187,7 @@
     </div>
 
     <footer>
-        <a href="index.html" class="back-to-main">Back to Main Page</a>
+        <a href="index.html" class="back-to-main" id="back-to-main">Back to Main Page</a>
         <p>&copy; 2024 frontdesk Softwares. All rights reserved.</p>
     </footer>
 
@@ -194,13 +196,25 @@
             if (lang === 'pt') {
                 document.getElementById('title').innerText = 'Bem-vindo ao Workshop de Desenvolvimento Web';
                 document.getElementById('description').innerText = 'Está pronto para mergulhar no mundo do desenvolvimento web? Junte-se a nós em um workshop prático onde exploraremos os fundamentos de HTML, CSS e JavaScript. Seja você iniciante ou esteja procurando atualizar suas habilidades, este workshop fornecerá as ferramentas e o conhecimento que você precisa para começar a construir seus próprios projetos na web.';
+                document.getElementById('details').innerText = 'O workshop cobrirá tudo, desde a estruturação das suas páginas web com HTML, estilizando-as com CSS, até adicionar funcionalidades interativas usando JavaScript. Além disso, você terá a chance de colaborar com outros participantes, compartilhar seu progresso e receber feedback de desenvolvedores experientes.';
+                document.getElementById('video-text').innerText = 'Seu vídeo aqui:';
+                document.getElementById('cta-button').innerText = 'Em breve uma plataforma para HTML, CSS e JavaScript. Para enviar códigos e compartilhar conhecimento.';
                 document.getElementById('cost').innerText = 'Custo: £200 Libras Esterlinas';
+                document.getElementById('course-details').innerText = 'Este curso cobre HTML, CSS e JavaScript ao longo de 9 semanas.';
+                document.getElementById('skills-info').innerText = 'Adquira habilidades fundamentais para começar a aprender frameworks posteriormente.';
                 document.getElementById('contact').innerHTML = 'Entre em contato conosco: <a href="mailto:frontdesksoftwares@email.ch">frontdesksoftwares@email.ch</a>';
+                document.getElementById('back-to-main').innerText = 'Voltar para a Página Principal';
             } else {
                 document.getElementById('title').innerText = 'Welcome to the Web Development Workshop';
                 document.getElementById('description').innerText = 'Are you ready to dive into the world of web development? Join us for a hands-on workshop where we\'ll explore the fundamentals of HTML, CSS, and JavaScript. Whether you\'re a beginner or looking to refresh your skills, this workshop will provide the tools and knowledge you need to start building your own web projects.';
+                document.getElementById('details').innerText = 'The workshop will cover everything from structuring your web pages with HTML, styling them with CSS, to adding interactive features using JavaScript. Plus, you\'ll get the chance to collaborate with other participants, share your progress, and get feedback from experienced developers.';
+                document.getElementById('video-text').innerText = 'Your video here:';
+                document.getElementById('cta-button').innerText = 'Soon a platform for HTML, CSS and JavaScript. To upload codes and share knowledge.';
                 document.getElementById('cost').innerText = 'Cost: £200 British Pounds';
+                document.getElementById('course-details').innerText = 'This course covers HTML, CSS, and JavaScript over 9 weeks.';
+                document.getElementById('skills-info').innerText = 'Gain foundational skills to start learning frameworks afterwards.';
                 document.getElementById('contact').innerHTML = 'Contact us at: <a href="mailto:frontdesksoftwares@email.ch">frontdesksoftwares@email.ch</a>';
+                document.getElementById('back-to-main').innerText = 'Back to Main Page';
             }
         }
     </script>
@@ -208,3 +222,4 @@
 
 </html>
 
+               
